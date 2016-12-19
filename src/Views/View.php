@@ -3,6 +3,7 @@
 namespace Semeformation\Mvc\Cinema_crud\Views;
 use Symfony\Component\HttpFoundation\Request;
 
+use \Symfony\Component\HttpFoundation\Request;
 use Exception;
 
 /**
@@ -26,13 +27,13 @@ class View {
      * Génère et affiche la vue
      */
 
-    public function generer($donnees = null) {
+    public function generer(Request $request = null, $donnees = null) {
+
+        $donnees['request'] = $request;
         // Génération de la partie spécifique de la vue
-        $content = $this->genererFichier($this->fichier,
-                $donnees);
-        // utilisation du template avec chargement des données spécifiques
-        $vue = $this->genererFichier(__DIR__ . '/viewTemplate.php',
-                ['title' => $this->titre,
+        $content = $this->genererFichier($this->fichier, $donnees);
+        // utilisation du template avec chargement des données spécifiques        
+        $vue = $this->genererFichier(__DIR__ . '/viewTemplate.php', ['title' => $this->titre,
             'content' => $content]);
         // Renvoi de la vue générée au navigateur
         return $vue;
@@ -55,7 +56,7 @@ class View {
             // Renvoi du contenu du tampon et nettoyage
             return ob_get_clean();
         } else {
-            throw new Exception('Impossible de find a view named ' . $fichier);
+            throw new Exception('Impossible to find a view named ' . $fichier);
         }
     }
 

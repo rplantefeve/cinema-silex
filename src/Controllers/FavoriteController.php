@@ -33,7 +33,7 @@ class FavoriteController {
         if (!array_key_exists("user",
                         $_SESSION)) {
             // renvoi à la page d'accueil
-            header('Location: index.php');
+            return $app->redirect('/home');
             exit;
         }
         // l'utilisateur est loggué
@@ -58,7 +58,7 @@ class FavoriteController {
         if (!array_key_exists("user",
                         $_SESSION)) {
             // renvoi à la page d'accueil
-            header('Location: index.php');
+            return $app->redirect('/home');
             exit;
         }
 
