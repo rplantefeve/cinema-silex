@@ -61,8 +61,7 @@ class HomeController extends Controller {
     }
 
     private function login(Request $request = null, Application $app = null,$entries, &$areCredentialsOK) {        
-        try {
-           echo $entries['email'];
+        try { 
             
             // On vérifie l'existence de l'utilisateur
             $this->utilisateurDAO->verifyUserCredentials($entries['email'], $entries['password']);
@@ -73,7 +72,7 @@ class HomeController extends Controller {
             // on redirige vers la page d'édition des films préférés
             // redirection vers la liste des préférences de films
             //header("Location: index.php?action=editFavoriteMoviesList");
-            return $app->redirect($request->getBasePath() . '/favorite/list');
+          return $app->redirect($request->getBasePath() . '/favorite/list');
         } catch (Exception $ex) {
             $areCredentialsOK = false;
             $this->utilisateurDAO->getLogger()->error($ex->getMessage());
