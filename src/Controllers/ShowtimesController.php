@@ -8,7 +8,7 @@ use Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 use DateTime;
-
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Description of ShowtimesController
  *
@@ -27,7 +27,7 @@ class ShowtimesController {
     /**
      * Route liste des séances d'un film
      */
-    public function movieShowtimes() {
+    public function movieShowtimes(Request $request = null, Application $app = null) {
         $adminConnected = false;
 
         session_start();
@@ -64,7 +64,7 @@ class ShowtimesController {
         // On génère la vue séances du film
         $vue = new View("MovieShowtimes");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer($request,[
             'cinemas'          => $cinemas,
             'film'             => $film,
             'seances'          => $seances,
@@ -75,7 +75,7 @@ class ShowtimesController {
     /**
      * Route liste des séances d'un cinéma
      */
-    public function cinemaShowtimes() {
+    public function cinemaShowtimes(Request $request = null, Application $app = null) {
         $adminConnected = false;
 
         session_start();
@@ -114,7 +114,7 @@ class ShowtimesController {
         // On génère la vue séances du cinéma
         $vue = new View("CinemaShowtimes");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer($request,[
             'cinema'         => $cinema,
             'films'          => $films,
             'seances'        => $seances,
@@ -171,7 +171,7 @@ class ShowtimesController {
     /**
      * Route pour créer/modifier une séance
      */
-    public function editShowtime() {
+    public function editShowtime($filmId,$cinemaId,Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
@@ -194,7 +194,7 @@ class ShowtimesController {
         $seance = null;
 
         // si l'on est en GET
-        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'GET') {
+        if ($request->isMethod('GET')) {
             // on assainie les variables
             $sanitizedEntries = filter_input_array(INPUT_GET,
                     ['cinemaID'   => FILTER_SANITIZE_NUMBER_INT,
@@ -320,7 +320,7 @@ class ShowtimesController {
         // On génère la vue édition d'une séance
         $vue = new View("EditShowtime");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer($request,[
             'cinema'        => $cinema,
             'film'          => $film,
             'seance'        => $seance,

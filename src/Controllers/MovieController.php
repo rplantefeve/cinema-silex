@@ -22,7 +22,7 @@ class MovieController {
     /**
      * Route Liste des films
      */
-    function moviesList() {
+    function moviesList(Request $request = null, Application $app = null) {
         $isUserAdmin = false;
 
         session_start();
@@ -36,7 +36,7 @@ class MovieController {
         // On génère la vue films
         $vue = new View("MoviesList");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer([$request,
             'films'       => $films,
             'isUserAdmin' => $isUserAdmin]);
     }
@@ -71,7 +71,7 @@ class MovieController {
     /**
      * Route Ajouter / Modifier un film
      */
-    function editMovie() {
+    function editMovie(Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
@@ -141,7 +141,7 @@ class MovieController {
         // On génère la vue films
         $vue = new View("EditMovie");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer($request,[
             'film'          => $film,
             'isItACreation' => $isItACreation]);
     }

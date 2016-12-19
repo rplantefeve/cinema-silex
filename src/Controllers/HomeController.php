@@ -24,7 +24,7 @@ class HomeController extends Controller {
     /**
      * Constructeur de la classe
      */
-    public function __construct(LoggerInterface $logger=null) {
+    public function __construct(LoggerInterface $logger = null) {
         $this->utilisateurDAO = new UtilisateurDAO($logger);
     }
 
@@ -41,35 +41,31 @@ class HomeController extends Controller {
         $areCredentialsOK = true;
 
         // si l'utilisateur est déjà authentifié
-        if (array_key_exists("user",
-                        $_SESSION)) {
+        if (array_key_exists("user", $_SESSION)) {
             $loginSuccess = true;
             // Sinon (pas d'utilisateur authentifié pour l'instant)
         } else {
             // si la méthode POST a été employée
-            if (filter_input(INPUT_SERVER,
-                            'REQUEST_METHOD') === "POST") {
+            if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
                 // on "sainifie" les entrées
-                $entries = $this->extractArrayFromPostRequest($request, ['email','password']);
+                $entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);
 
-                $this->login($entries,
-                        $areCredentialsOK);
+                $this->login($entries, $areCredentialsOK);
             }
         }
 
         // On génère la vue Accueil
         $vue = new View("Home");
         // En passant les variables nécessaires à son bon affichage
-        return $vue->generer([
-            'areCredentialsOK' => $areCredentialsOK,
-            'loginSuccess' => $loginSuccess]);
+        return $vue->generer($request, [
+                    'areCredentialsOK' => $areCredentialsOK,
+                    'loginSuccess' => $loginSuccess]);
     }
 
     private function login($sanitizedEntries, &$areCredentialsOK) {
         try {
             // On vérifie l'existence de l'utilisateur
-            $this->utilisateurDAO->verifyUserCredentials($sanitizedEntries['email'],
-                    $sanitizedEntries['password']);
+            $this->utilisateurDAO->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
 
             // on enregistre l'utilisateur
             $_SESSION['user'] = $sanitizedEntries['email'];
@@ -84,7 +80,7 @@ class HomeController extends Controller {
         }
     }
 
-    public function createNewUser() {
+    public function createNewUser(Request $request = null, Application $app = null) {
         // variables de contrôles du formulaire de création
         $isFirstNameEmpty = false;
         $isLastNameEmpty = false;
@@ -95,11 +91,9 @@ class HomeController extends Controller {
         $isPasswordValid = true;
 
         // si la méthode POST est utilisée, cela signifie que le formulaire a été envoyé
-        if (filter_input(INPUT_SERVER,
-                        'REQUEST_METHOD') === "POST") {
+        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
             // on "sainifie" les entrées
-            $sanitizedEntries = filter_input_array(INPUT_POST,
-                    ['firstName' => FILTER_SANITIZE_STRING,
+            $sanitizedEntries = filter_input_array(INPUT_POST, ['firstName' => FILTER_SANITIZE_STRING,
                 'lastName' => FILTER_SANITIZE_STRING,
                 'email' => FILTER_SANITIZE_EMAIL,
                 'password' => FILTER_DEFAULT,
@@ -143,13 +137,9 @@ class HomeController extends Controller {
             // si les champs nécessaires ne sont pas vides, que l'utilisateur est unique et que le mot de passe est valide
             if (!$isFirstNameEmpty && !$isLastNameEmpty && !$isEmailAddressEmpty && $isUserUnique && !$isPasswordEmpty && $isPasswordValid) {
                 // hash du mot de passe
-                $password = password_hash($sanitizedEntries['password'],
-                        PASSWORD_DEFAULT);
+                $password = password_hash($sanitizedEntries['password'], PASSWORD_DEFAULT);
                 // créer l'utilisateur
-                $this->utilisateurDAO->createUser($sanitizedEntries['firstName'],
-                        $sanitizedEntries['lastName'],
-                        $sanitizedEntries['email'],
-                        $password);
+                $this->utilisateurDAO->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
 
                 session_start();
                 // authentifier l'utilisateur
@@ -180,7 +170,7 @@ class HomeController extends Controller {
         // On génère la vue Création d'un utilisateur
         $vue = new View("CreateUser");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer($donnees);
+        $vue->generer($request, $donnees);
     }
 
     public function logout() {
@@ -189,11 +179,11 @@ class HomeController extends Controller {
         header('Location: index.php');
     }
 
-    public function error($e) {
+    public function error(Request $request = null, Application $app = null,$e) {
 
         $this->utilisateurDAO->getLogger()->error('Exception : ' . $e->getMessage() . ', File : ' . $e->getFile() . ', Line : ' . $e->getLine() . ', Stack trace : ' . $e->getTraceAsString());
         $vue = new View("Error");
-        $vue->generer(['messageErreur' => $e->getMessage()]);
+        $vue->generer($request,['messageErreur' => $e->getMessage()]);
     }
 
 }

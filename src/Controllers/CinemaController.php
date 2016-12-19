@@ -22,7 +22,7 @@ class CinemaController {
     /**
      * Route Liste des cinémas
      */
-    public function cinemasList() {
+    public function cinemasList(Request $request = null, Application $app = null) {
         $isUserAdmin = false;
 
         session_start();
@@ -36,7 +36,7 @@ class CinemaController {
         // On génère la vue films
         $vue = new View("CinemasList");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer([$request,
             'cinemas'     => $cinemas,
             'isUserAdmin' => $isUserAdmin]);
     }
@@ -44,7 +44,7 @@ class CinemaController {
     /**
      * Route Ajouter/Modifier un cinéma
      */
-    public function editCinema() {
+    public function editCinema(Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
@@ -114,7 +114,7 @@ class CinemaController {
         // On génère la vue films
         $vue = new View("EditCinema");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer($request,[
             'cinema'        => $cinema,
             'isItACreation' => $isItACreation,
         ]);

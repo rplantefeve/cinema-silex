@@ -27,7 +27,7 @@ class FavoriteController {
         $this->prefereDAO->setFilmDAO(new FilmDAO($logger));
     }
 
-    public function editFavoriteMoviesList() {
+    public function editFavoriteMoviesList(Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user",
@@ -47,12 +47,12 @@ class FavoriteController {
         // On génère la vue Films préférés
         $vue = new View("FavoriteMoviesList");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer(array(
+        $vue->generer($request,array(
             'utilisateur' => $utilisateur,
             'preferes' => $preferes));
     }
 
-    public function editFavoriteMovie() {
+    public function editFavoriteMovie(Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user",
@@ -168,7 +168,7 @@ class FavoriteController {
         // On génère la vue Films préférés
         $vue = new View("FavoriteMovie");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer($donnees);
+        $vue->generer($request,$donnees);
     }
 
     public function deleteFavoriteMovie() {
