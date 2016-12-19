@@ -8,6 +8,7 @@ use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 use Exception;
+use Silex\Application;
 
 /**
  * Description of HomeController
@@ -181,10 +182,10 @@ class HomeController extends Controller {
         return $vue->generer($donnees);
     }
 
-    public function logout() {
+    public function logout(Request $request = null, Application $app = null) {
         session_start();
         session_destroy();
-        return $app->redirect('/home');
+        return $app->redirect($request->getBasePath().'/home');
     }
 
     public function error(Request $request = null, Application $app = null,$e) {

@@ -45,3 +45,11 @@ $app->get('/showtime/cinema/add/{cinemaId}',
 $app->get('/showtime/add/{filmId}/{cinemaId}',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\ShowtimesController::editShowtime')
 ->bind('editShowtime');
+
+$app->get('/showtime/cinema/{cinemaId}',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\ShowtimesController::cinemaShowtimes')
+->bind('cinemaShowtimes');
+
+$app->get('/logout',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::logout')
+->bind('logout');
