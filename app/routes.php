@@ -5,12 +5,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$app->get('/home', 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')->bind('home');
-$app->get('/showtime/movie/{filmId}', 'Semeformation\\Mvc\\Cinema_crud\\controllers\\ShowtimesController::movieShowtimes')->bind('showtime');
+$app->get('/home',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
+->bind('home');
+
+$app->get('/showtime/movie/{filmId}',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\ShowtimesController::movieShowtimes')
+->bind('showtime');
 
 $app->match('/user/add',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::createNewUser')
 ->bind('/user/add');
+
 $app->post('/login',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
 ->bind('login');
@@ -26,6 +32,7 @@ $app->get('/movie/add',
 $app->get('/movie/delete',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::deleteMovie')
 ->bind('/movie/delete');
+
 $app->get('/movie/list',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::moviesList')
 ->bind('moviesList');
