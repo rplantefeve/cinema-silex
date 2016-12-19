@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
  *
  * @author User
  */
-class MovieController {
+class MovieController extends Controller{
 
     private $filmDAO;
 
