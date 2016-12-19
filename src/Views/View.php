@@ -18,7 +18,7 @@ class View {
 
     public function __construct($action) {
         // La vue à générer dépend de l'action demandée
-        $this->fichier = "Views/view" . $action . ".php";
+        $this->fichier = dirname(__DIR__) . "/Views/view" . $action . ".php";
     }
 
     /*
@@ -34,7 +34,7 @@ class View {
                 ['title' => $this->titre,
             'content' => $content]);
         // Renvoi de la vue générée au navigateur
-        echo $vue;
+        return $vue;
     }
 
     /*

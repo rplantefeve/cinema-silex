@@ -2,6 +2,8 @@
 
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
+use Symfony\Component\HttpFoundation\Request;
+use Semeformation\Mvc\Cinema_crud\Controllers\Controller;
 use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
@@ -12,7 +14,7 @@ use Exception;
  *
  * @author User
  */
-class HomeController {
+class HomeController extends Controller {
 
     /**
      * L'utilisateur de l'application
@@ -22,7 +24,7 @@ class HomeController {
     /**
      * Constructeur de la classe
      */
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger=null) {
         $this->utilisateurDAO = new UtilisateurDAO($logger);
     }
 
@@ -30,7 +32,7 @@ class HomeController {
      * Route Accueil
      */
 
-    public function home() {
+    public function home(Request $request = null, Application $app = null) {
         session_start();
         // personne d'authentifié à ce niveau
         $loginSuccess = false;
@@ -48,11 +50,9 @@ class HomeController {
             if (filter_input(INPUT_SERVER,
                             'REQUEST_METHOD') === "POST") {
                 // on "sainifie" les entrées
-                $sanitizedEntries = filter_input_array(INPUT_POST,
-                        ['email' => FILTER_SANITIZE_EMAIL,
-                    'password' => FILTER_DEFAULT]);
+                $entries = $this->extractArrayFromPostRequest($request, ['email','password']);
 
-                $this->login($sanitizedEntries,
+                $this->login($entries,
                         $areCredentialsOK);
             }
         }
@@ -60,7 +60,7 @@ class HomeController {
         // On génère la vue Accueil
         $vue = new View("Home");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        return $vue->generer([
             'areCredentialsOK' => $areCredentialsOK,
             'loginSuccess' => $loginSuccess]);
     }
