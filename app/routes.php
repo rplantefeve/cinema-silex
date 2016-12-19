@@ -9,19 +9,19 @@ $app->get('/home',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
 ->bind('home');
 
-// CinemaList, editCinema, delete cinema
-$app->get('/cinemaList',
+// CinemaList, editCinema, delete cinema, add cinema team papat
+$app->match('/cinema/list',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::cinemaList')
 ->bind('cinema/list');
 
-$app->get('/editCinema',
+$app->match('/cinema/edit/{cinemaID}',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::editCinema')
-->bind('cinema/edit/cinemaID');
+->bind('cinema/edit/{cinemaID}');
 
-$app->get('/editCinema',
+$app->match('/cinema/add',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::editCinema/add')
 ->bind('cinema/add');
 
-$app->get('/cinemaDelete',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::cinemaDelete')
-->bind('cinema/cinemaDelete/cinemaID');
+$app->post('/cinema/delete/{cinemaID}',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::deleteCinema')
+->bind('cinema/cinemaDelete/{cinemaID}');
