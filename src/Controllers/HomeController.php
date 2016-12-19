@@ -145,13 +145,13 @@ class HomeController extends Controller {
             // si les champs nécessaires ne sont pas vides, que l'utilisateur est unique et que le mot de passe est valide
             if (!$isFirstNameEmpty && !$isLastNameEmpty && !$isEmailAddressEmpty && $isUserUnique && !$isPasswordEmpty && $isPasswordValid) {
                 // hash du mot de passe
-                $password = password_hash($sanitizedEntries['password'], PASSWORD_DEFAULT);
+                $password = password_hash($entries['password'], PASSWORD_DEFAULT);
                 // créer l'utilisateur
-                $this->utilisateurDAO->createUser($sanitizedEntries['firstName'], $sanitizedEntries['lastName'], $sanitizedEntries['email'], $password);
+                $this->utilisateurDAO->createUser($entries['firstName'], $entries['lastName'], $entries['email'], $password);
 
                 session_start();
                 // authentifier l'utilisateur
-                $_SESSION['user'] = $sanitizedEntries['email'];
+                $_SESSION['user'] = $entries['email'];
                 $_SESSION['userID'] = $this->utilisateurDAO->getUserIDByEmailAddress($_SESSION['user']);
                 // redirection vers la liste des préférences de films
                 header("Location: index.php?action=editFavoriteMoviesList");

@@ -54,7 +54,7 @@
     </div>
     <input type="submit" value="Créer un nouvel utilisateur"/>
 </form>
-<form name="backToMainPage" action="index.php">
+<form name="backToMainPage" action="<?= $request->getBasePath() . '/home' ?>">
     <input type="submit" value="Retour à l'accueil"/>
 </form>
 

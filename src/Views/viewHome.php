@@ -43,8 +43,7 @@
             <input type="submit" value="Consulter la liste des cinémas"/>
         </form>
 
-        <form name="moviesList" method="GET" action="index.php">
-            <input name="action" type="hidden" value="moviesList"/>
+        <form name="moviesList" method="GET" action="<?= $request->getBasePath() . '/movie/list' ?>">
             <input type="submit" value="Consulter la liste des films"/>
         </form>
     </header>
