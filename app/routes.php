@@ -9,3 +9,6 @@ $app->get('/home',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
 ->bind('home');
 
+$app->get('/showtime/edit/{filmId}/{cinemaId}',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\ShowtimesController::editShowtime')
+->bind('editShowtime');

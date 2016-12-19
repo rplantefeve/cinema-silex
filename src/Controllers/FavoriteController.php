@@ -27,13 +27,13 @@ class FavoriteController {
         $this->prefereDAO->setFilmDAO(new FilmDAO($logger));
     }
 
-    public function editFavoriteMoviesList(Request $request = null, Application $app = null) {
+    public function editFavoriteMoviesList() {
         session_start();
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user",
                         $_SESSION)) {
             // renvoi à la page d'accueil
-            header('Location: index.php');
+            return $app->redirect('/home');
             exit;
         }
         // l'utilisateur est loggué
@@ -47,18 +47,18 @@ class FavoriteController {
         // On génère la vue Films préférés
         $vue = new View("FavoriteMoviesList");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer($request,array(
+        $vue->generer(array(
             'utilisateur' => $utilisateur,
             'preferes' => $preferes));
     }
 
-    public function editFavoriteMovie(Request $request = null, Application $app = null) {
+    public function editFavoriteMovie() {
         session_start();
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user",
                         $_SESSION)) {
             // renvoi à la page d'accueil
-            header('Location: index.php');
+            return $app->redirect('/home');
             exit;
         }
 
@@ -168,7 +168,7 @@ class FavoriteController {
         // On génère la vue Films préférés
         $vue = new View("FavoriteMovie");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer($request,$donnees);
+        $vue->generer($donnees);
     }
 
     public function deleteFavoriteMovie() {

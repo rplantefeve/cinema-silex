@@ -176,7 +176,7 @@ class HomeController extends Controller {
     public function logout() {
         session_start();
         session_destroy();
-        header('Location: index.php');
+        return $app->redirect('/home');
     }
 
     public function error(Request $request = null, Application $app = null,$e) {
