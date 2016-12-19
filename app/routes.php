@@ -9,10 +9,24 @@ $app->get('/home',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
 ->bind('home');
 
+$app->match('/user/add',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::createNewUser')
+->bind('/user/add');
 $app->post('/login',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
 ->bind('login');
 
+$app->post('/movie/edit',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::editMovie')
+->bind('/movie/edit');
+
+$app->get('/movie/add',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::editMovie')
+->bind('/movie/add');
+
+$app->get('/movie/delete',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::deleteMovie')
+->bind('/movie/delete');
 $app->get('/movie/list',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::moviesList')
 ->bind('moviesList');

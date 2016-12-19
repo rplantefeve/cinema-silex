@@ -3,7 +3,7 @@
 <form name="createUser" method="POST" action="index.php?action=createNewUser">
     <!-- la longueur maximum des input est en corrélation avec la longueur maximum des champs dans la BDD -->
     <label>Prénom :</label>
-    <input name='firstName' type="text" maxlength="30" value="<?= $sanitizedEntries['firstName']
+    <input name='firstName' type="text" maxlength="30" value="<?= $entries['firstName']
 ?>" />
     <div class="error">
         <?php
@@ -13,7 +13,7 @@
         ?>
     </div>
     <label>Nom :</label>
-    <input name='lastName' type="text" maxlength="50" value="<?= $sanitizedEntries['lastName'] ?>" />
+    <input name='lastName' type="text" maxlength="50" value="<?= $entries['lastName'] ?>" />
     <div class="error">
         <?php
         if ($isLastNameEmpty) {
@@ -22,7 +22,7 @@
         ?>
     </div>
     <label>Adresse email :</label>
-    <input name='email' type="email" maxlength="90" value="<?= $sanitizedEntries['email'] ?>" />
+    <input name='email' type="email" maxlength="90" value="<?= $entries['email'] ?>" />
     <div class="error">
         <?php
         if ($isEmailAddressEmpty) {

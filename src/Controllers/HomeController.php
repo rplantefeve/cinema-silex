@@ -108,37 +108,37 @@ class HomeController extends Controller {
 //                'passwordConfirmation' => FILTER_DEFAULT]);
 
             // si le prénom n'a pas été renseigné
-            if ($sanitizedEntries['firstName'] === "") {
+            if ($entries['firstName'] === "") {
                 $isFirstNameEmpty = true;
             }
 
             // si le nom n'a pas été renseigné
-            if ($sanitizedEntries['lastName'] === "") {
+            if ($entries['lastName'] === "") {
                 $isLastNameEmpty = true;
             }
 
             // si l'adresse email n'a pas été renseignée
-            if ($sanitizedEntries['email'] === "") {
+            if ($entries['email'] === "") {
                 $isEmailAddressEmpty = true;
             } else {
                 // On vérifie l'existence de l'utilisateur
-                $userID = $this->utilisateurDAO->getUserIDByEmailAddress($sanitizedEntries['email']);
+                $userID = $this->utilisateurDAO->getUserIDByEmailAddress($entries['email']);
                 // si on a un résultat, cela signifie que cette adresse email existe déjà
                 if ($userID) {
                     $isUserUnique = false;
                 }
             }
             // si le password n'a pas été renseigné
-            if ($sanitizedEntries['password'] === "") {
+            if ($entries['password'] === "") {
                 $isPasswordEmpty = true;
             }
             // si la confirmation du password n'a pas été renseigné
-            if ($sanitizedEntries['passwordConfirmation'] === "") {
+            if ($entries['passwordConfirmation'] === "") {
                 $isPasswordConfirmationEmpty = true;
             }
 
             // si le mot de passe et sa confirmation sont différents
-            if ($sanitizedEntries['password'] !== $sanitizedEntries['passwordConfirmation']) {
+            if ($entries['password'] !== $entries['passwordConfirmation']) {
                 $isPasswordValid = false;
             }
 
@@ -161,13 +161,13 @@ class HomeController extends Controller {
         // sinon (le formulaire n'a pas été envoyé)
         else {
             // initialisation des variables du formulaire
-            $sanitizedEntries['firstName'] = '';
-            $sanitizedEntries['lastName'] = '';
-            $sanitizedEntries['email'] = '';
+            $entries['firstName'] = '';
+            $entries['lastName'] = '';
+            $entries['email'] = '';
         }
 
         $donnees = [
-            'sanitizedEntries' => $sanitizedEntries,
+            'entries' => $entries,
             'isFirstNameEmpty' => $isFirstNameEmpty,
             'isLastNameEmpty' => $isLastNameEmpty,
             'isEmailAddressEmpty' => $isEmailAddressEmpty,
