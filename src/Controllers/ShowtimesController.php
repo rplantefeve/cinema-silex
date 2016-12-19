@@ -191,15 +191,19 @@ class ShowtimesController {
         // si l'on est en GET
         if ($request->isMethod('GET')) {
             // on assainie les variables
-            $sanitizedEntries = filter_input_array(INPUT_GET, [
-                'from' => FILTER_SANITIZE_STRING,
-                'heureDebut' => FILTER_SANITIZE_STRING,
-                'heureFin' => FILTER_SANITIZE_STRING,
-                'version' => FILTER_SANITIZE_STRING]);
+            $entries = $this->extractArrayFromGetRequest($request, ['from', 
+                'heureDebut','heureFin','version' ]);  
+//            $sanitizedEntries = filter_input_array(INPUT_GET, [
+//                'from' => FILTER_SANITIZE_STRING,
+//                'heureDebut' => FILTER_SANITIZE_STRING,
+//                'heureFin' => FILTER_SANITIZE_STRING,
+//                'version' => FILTER_SANITIZE_STRING]);
             // pour l'instant, on vérifie les données en GET
-            if ($sanitizedEntries && isset($cinemaId, $filmId, $sanitizedEntries['from'])) {
+//            if ($sanitizedEntries && isset($cinemaId, $filmId, $sanitizedEntries['from'])) {
+           if ($entries && isset($cinemaId, $filmId, $entries['from'])) {
                 // d'où vient on ?
-                $from = $sanitizedEntries['from'];
+//                $from = $sanitizedEntries['from'];
+               $from = $entries['from'];
 
                 // puis on récupère les informations du cinéma en question
                 $cinema = $this->seanceDAO->getCinemaDAO()->getCinemaByID($cinemaId);
@@ -208,28 +212,30 @@ class ShowtimesController {
                 $film = $this->seanceDAO->getFilmDAO()->getMovieByID($filmId);
 
                 // s'il on vient des séances du film
-                if (strstr($sanitizedEntries['from'], 'movie')) {
+//                if (strstr($sanitizedEntries['from'], 'movie')) {
+                if (strstr($entries['from'], 'movie')) {
                     $fromCinema = false;
                     // on vient du film
                     $fromFilm = true;
                 }
 
                 // ici, on veut savoir si on modifie ou si on ajoute
-                if (isset($sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin'], $sanitizedEntries['version'])) {
+//                if (isset($sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin'], $sanitizedEntries['version'])) {
+                if (isset($entries['heureDebut'], $entries['heureFin'], $entries['version'])) {
                     // nous sommes dans le cas d'une modification
                     $isItACreation = false;
                     $seance = new \Semeformation\Mvc\Cinema_crud\Models\Seance();
                     // on récupère les anciennes valeurs (utile pour retrouver la séance avant de la modifier
-                    $seanceOld['dateheureDebutOld'] = $sanitizedEntries['heureDebut'];
-                    $seanceOld['dateheureFinOld'] = $sanitizedEntries['heureFin'];
+                    $seanceOld['dateheureDebutOld'] = $entries['heureDebut'];
+                    $seanceOld['dateheureFinOld'] = $entries['heureFin'];
                     // dates PHP
-                    $dateheureDebut = new DateTime($sanitizedEntries['heureDebut']);
-                    $dateheureFin = new DateTime($sanitizedEntries['heureFin']);
+                    $dateheureDebut = new DateTime($entries['heureDebut']);
+                    $dateheureFin = new DateTime($entries['heureFin']);
                     // découpage en heures
                     $seance->setHeureDebut($dateheureDebut);
                     $seance->setHeureFin($dateheureFin);
                     // on récupère la version
-                    $seance->setVersion($sanitizedEntries['version']);
+                    $seance->setVersion($entries['version']);
                 }
             }
             // sinon, on retourne à l'accueil
@@ -240,15 +246,18 @@ class ShowtimesController {
         } else if ($request->isMethod('POST')) {
             // on assainie les variables
             //$entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);
-            $sanitizedEntries = filter_input_array(INPUT_POST, ['datedebut' => FILTER_SANITIZE_STRING,
-                'heuredebut' => FILTER_SANITIZE_STRING,
-                'datefin' => FILTER_SANITIZE_STRING,
-                'heurefin' => FILTER_SANITIZE_STRING,
-                'dateheurefinOld' => FILTER_SANITIZE_STRING,
-                'dateheuredebutOld' => FILTER_SANITIZE_STRING,
-                'version' => FILTER_SANITIZE_STRING,
-                'from' => FILTER_SANITIZE_STRING,
-                'modificationInProgress' => FILTER_SANITIZE_STRING]);
+//            $sanitizedEntries = filter_input_array(INPUT_POST, ['datedebut' => FILTER_SANITIZE_STRING,
+//                'heuredebut' => FILTER_SANITIZE_STRING,
+//                'datefin' => FILTER_SANITIZE_STRING,
+//                'heurefin' => FILTER_SANITIZE_STRING,
+//                'dateheurefinOld' => FILTER_SANITIZE_STRING,
+//                'dateheuredebutOld' => FILTER_SANITIZE_STRING,
+//                'version' => FILTER_SANITIZE_STRING,
+//                'from' => FILTER_SANITIZE_STRING,
+//                'modificationInProgress' => FILTER_SANITIZE_STRING]);
+              $sanitizedEntries = $this->extractArrayFromPostRequest($request, ['datedebut', 
+                'heureDebut','datefin','heureFin','version','dateheurefinOld',
+                 'dateheuredebutOld','version','from','modificationInProgress']);
             // si toutes les valeurs sont renseignées
             if ($sanitizedEntries && isset($cinemaId, $filmId, $sanitizedEntries['datedebut'], $sanitizedEntries['heuredebut'], $sanitizedEntries['datefin'], $sanitizedEntries['heurefin'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $sanitizedEntries['version'], $sanitizedEntries['from'])) {
                 // nous sommes en Français
