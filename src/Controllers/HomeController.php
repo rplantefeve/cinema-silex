@@ -84,7 +84,7 @@ class HomeController extends Controller {
         }
     }
 
-    public function createNewUser() {
+    public function createNewUser(Request $request = null, Application $app = null) {
         // variables de contrôles du formulaire de création
         $isFirstNameEmpty = false;
         $isLastNameEmpty = false;
@@ -97,46 +97,42 @@ class HomeController extends Controller {
         // si la méthode POST est utilisée, cela signifie que le formulaire a été envoyé
         if (filter_input(INPUT_SERVER,
                         'REQUEST_METHOD') === "POST") {
-            // on "sainifie" les entrées
-            $sanitizedEntries = filter_input_array(INPUT_POST,
-                    ['firstName' => FILTER_SANITIZE_STRING,
-                'lastName' => FILTER_SANITIZE_STRING,
-                'email' => FILTER_SANITIZE_EMAIL,
-                'password' => FILTER_DEFAULT,
-                'passwordConfirmation' => FILTER_DEFAULT]);
+            
+            // on "assainit" les entrées
+                $entries = $this->extractArrayFromPostRequest($request, ['firstName','lastName','email','password','passwordConfirmation']);
 
             // si le prénom n'a pas été renseigné
-            if ($sanitizedEntries['firstName'] === "") {
+            if ($entries['firstName'] === "") {
                 $isFirstNameEmpty = true;
             }
 
             // si le nom n'a pas été renseigné
-            if ($sanitizedEntries['lastName'] === "") {
+            if ($entries['lastName'] === "") {
                 $isLastNameEmpty = true;
             }
 
             // si l'adresse email n'a pas été renseignée
-            if ($sanitizedEntries['email'] === "") {
+            if ($entries['email'] === "") {
                 $isEmailAddressEmpty = true;
             } else {
                 // On vérifie l'existence de l'utilisateur
-                $userID = $this->utilisateurDAO->getUserIDByEmailAddress($sanitizedEntries['email']);
+                $userID = $this->utilisateurDAO->getUserIDByEmailAddress($entries['email']);
                 // si on a un résultat, cela signifie que cette adresse email existe déjà
                 if ($userID) {
                     $isUserUnique = false;
                 }
             }
             // si le password n'a pas été renseigné
-            if ($sanitizedEntries['password'] === "") {
+            if ($entries['password'] === "") {
                 $isPasswordEmpty = true;
             }
             // si la confirmation du password n'a pas été renseigné
-            if ($sanitizedEntries['passwordConfirmation'] === "") {
+            if ($entries['passwordConfirmation'] === "") {
                 $isPasswordConfirmationEmpty = true;
             }
 
             // si le mot de passe et sa confirmation sont différents
-            if ($sanitizedEntries['password'] !== $sanitizedEntries['passwordConfirmation']) {
+            if ($entries['password'] !== $entries['passwordConfirmation']) {
                 $isPasswordValid = false;
             }
 
@@ -163,13 +159,13 @@ class HomeController extends Controller {
         // sinon (le formulaire n'a pas été envoyé)
         else {
             // initialisation des variables du formulaire
-            $sanitizedEntries['firstName'] = '';
-            $sanitizedEntries['lastName'] = '';
-            $sanitizedEntries['email'] = '';
+            $entries['firstName'] = '';
+            $entries['lastName'] = '';
+            $entries['email'] = '';
         }
 
         $donnees = [
-            'sanitizedEntries' => $sanitizedEntries,
+            'entries' => $entries,
             'isFirstNameEmpty' => $isFirstNameEmpty,
             'isLastNameEmpty' => $isLastNameEmpty,
             'isEmailAddressEmpty' => $isEmailAddressEmpty,
@@ -180,7 +176,7 @@ class HomeController extends Controller {
         // On génère la vue Création d'un utilisateur
         $vue = new View("CreateUser");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer($donnees);
+        return $vue->generer($donnees);
     }
 
     public function logout() {
