@@ -22,7 +22,7 @@
             </div>
             <input type="submit" value="Editer ma liste de films préférés"/>
         </form>
-        <p>Pas encore d'espace personnel ? <a href="user/add">Créer sa liste de films préférés.</a></p>
+        <p>Pas encore d'espace personnel ? <a href="<?= $request->getBasePath() . '/user/add'?>">Créer sa liste de films préférés.</a></p>
         <?php
     // sinon (utilisateur authentifié)
     else:

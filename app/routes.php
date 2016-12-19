@@ -21,7 +21,7 @@ $app->get('/movie/list',
 'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::moviesList')
 ->bind('movie/list');
 
-$app->post('/movie/edit',
+$app->post('/movie/edit/{filmId}',
 'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::editMovie')
 ->bind('movie/edit');
 
@@ -29,7 +29,7 @@ $app->get('/movie/add',
 'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::editMovie')
 ->bind('movie/add');
 
-$app->get('/movie/delete',
+$app->get('/movie/delete/{filmId}',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::deleteMovie')
 ->bind('/movie/delete');
 $app->get('/movie/list',

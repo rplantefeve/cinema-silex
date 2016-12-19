@@ -41,7 +41,7 @@
     <?php if ($isUserAdmin): ?>
         <tr class="new">
             <td colspan="5">
-                <form name="addMovie" action="<?= $request->getBasePath() . '/movie/edit' ?>">
+                <form name="addMovie" action="<?= $request->getBasePath() . '/movie/add' ?>">
                     <button class="add" type="submit">Cliquer ici pour ajouter un film...</button>
                 </form>
             </td>
