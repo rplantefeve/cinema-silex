@@ -18,7 +18,7 @@ class ShowtimesController {
 
     private $seanceDAO;
 
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger=null) {
         $this->seanceDAO = new SeanceDAO($logger);
         $this->seanceDAO->setCinemaDAO(new CinemaDAO($logger));
         $this->seanceDAO->setFilmDAO(new FilmDAO($logger));
@@ -50,8 +50,8 @@ class ShowtimesController {
         }
         // sinon, on retourne à l'accueil
         else {
-            return $app->redirect('/home');
-            exit();
+            return $app->redirect($request->getBasePath() . '/home');
+            
         }
 
         // on récupère la liste des cinémas de ce film
@@ -96,8 +96,8 @@ class ShowtimesController {
         }
         // sinon, on retourne à l'accueil
         else {
-            return $app->redirect('/home');
-            exit();
+            return $app->redirect($request->getBasePath() . '/home');
+            
         }
 
         // on récupère la liste des films de ce cinéma
@@ -124,8 +124,8 @@ class ShowtimesController {
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user", $_SESSION)) {
             // renvoi à la page d'accueil
-            return $app->redirect('/home');
-            exit;
+            return $app->redirect($request->getBasePath() . '/home');
+            
         }
 
         // si la méthode de formulaire est la méthode POST
@@ -153,8 +153,8 @@ class ShowtimesController {
             }
         } else {
             // renvoi à la page d'accueil
-            return $app->redirect('/home');
-            exit;
+            return $app->redirect($request->getBasePath() . '/home');
+            
         }
     }
 
@@ -171,7 +171,8 @@ class ShowtimesController {
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
             // renvoi à la page d'accueil
-            return $app->redirect('/home');
+            return $app->redirect($request->getBasePath() . '/home');
+           // header('Location:index.php');
         }
 
         // init. des flags. Etat par défaut => je viens du cinéma et je créé
@@ -233,14 +234,13 @@ class ShowtimesController {
             }
             // sinon, on retourne à l'accueil
             else {
-                return $app->redirect('/home');
+                return $app->redirect($request->getBasePath() . '/home');
             }
             // sinon, on est en POST
         } else if ($request->isMethod('POST')) {
             // on assainie les variables
-            $sanitizedEntries = filter_input_array(INPUT_POST, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT,
-                'filmID' => FILTER_SANITIZE_NUMBER_INT,
-                'datedebut' => FILTER_SANITIZE_STRING,
+            //$entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);
+            $sanitizedEntries = filter_input_array(INPUT_POST, ['datedebut' => FILTER_SANITIZE_STRING,
                 'heuredebut' => FILTER_SANITIZE_STRING,
                 'datefin' => FILTER_SANITIZE_STRING,
                 'heurefin' => FILTER_SANITIZE_STRING,
@@ -250,7 +250,7 @@ class ShowtimesController {
                 'from' => FILTER_SANITIZE_STRING,
                 'modificationInProgress' => FILTER_SANITIZE_STRING]);
             // si toutes les valeurs sont renseignées
-            if ($sanitizedEntries && isset($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['datedebut'], $sanitizedEntries['heuredebut'], $sanitizedEntries['datefin'], $sanitizedEntries['heurefin'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $sanitizedEntries['version'], $sanitizedEntries['from'])) {
+            if ($sanitizedEntries && isset($cinemaId, $filmId, $sanitizedEntries['datedebut'], $sanitizedEntries['heuredebut'], $sanitizedEntries['datefin'], $sanitizedEntries['heurefin'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $sanitizedEntries['version'], $sanitizedEntries['from'])) {
                 // nous sommes en Français
                 setlocale(LC_TIME, 'fra_fra');
                 // date du jour de projection de la séance
@@ -259,24 +259,32 @@ class ShowtimesController {
                 // Est-on dans le cas d'une insertion ?
                 if (!isset($sanitizedEntries['modificationInProgress'])) {
                     // j'insère dans la base
-                    $resultat = $this->seanceDAO->insertNewShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                    $resultat = $this->seanceDAO->insertNewShowtime($cinemaId, $filmId, 
+                            $datetimeDebut->format("Y-m-d H:i"), 
+                            $datetimeFin->format("Y-m-d H:i"), 
+                            $sanitizedEntries['version']);
                 } else {
                     // c'est une mise à jour
-                    $resultat = $this->seanceDAO->updateShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $datetimeDebut->format("Y-m-d H:i"), $datetimeFin->format("Y-m-d H:i"), $sanitizedEntries['version']);
+                    $resultat = $this->seanceDAO->updateShowtime($cinemaId, $filmId, 
+                            $sanitizedEntries['dateheuredebutOld'], 
+                            $sanitizedEntries['dateheurefinOld'], 
+                            $datetimeDebut->format("Y-m-d H:i"), 
+                            $datetimeFin->format("Y-m-d H:i"), 
+                            $sanitizedEntries['version']);
                 }
                 // en fonction d'où je viens, je redirige
                 if (strstr($sanitizedEntries['from'], 'movie')) {
                     // header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
                     $app->redirect($request->getBasePath() . '/showtime/movie/' . $filmId);
                 } else {
-                    header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
-                    exit;
+                    //header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
+                    $app->redirect($request->getBasePath() . '/showtime/cinema/' . $cinemaId);                   
                 }
             }
         }
         // sinon, on retourne à l'accueil
         else {
-            return $app->redirect('/home');
+            return $app->redirect($request->getBasePath() . '/home');
         }
 
         // On génère la vue édition d'une séance

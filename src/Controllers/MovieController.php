@@ -6,6 +6,8 @@ use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Description of MovieController
  *
@@ -22,7 +24,7 @@ class MovieController {
     /**
      * Route Liste des films
      */
-    function moviesList() {
+    function moviesList(Request $request = null, Application $app = null) {
         $isUserAdmin = false;
 
         session_start();
@@ -36,7 +38,7 @@ class MovieController {
         // On génère la vue films
         $vue = new View("MoviesList");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        $vue->generer($request,[
             'films'       => $films,
             'isUserAdmin' => $isUserAdmin]);
     }

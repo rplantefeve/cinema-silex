@@ -46,14 +46,12 @@ class HomeController extends Controller {
             // Sinon (pas d'utilisateur authentifié pour l'instant)
         } else {
             // si la méthode POST a été employée
-            if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
+            if ($request->isMethod('POST')) {
                 // on "sainifie" les entrées
-                $entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);
-
-                $this->login($entries, $areCredentialsOK);
+                $entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);                
+                $this->login($request,$app,$entries, $areCredentialsOK);
             }
         }
-
         // On génère la vue Accueil
         $vue = new View("Home");
         // En passant les variables nécessaires à son bon affichage
@@ -62,18 +60,20 @@ class HomeController extends Controller {
                     'loginSuccess' => $loginSuccess]);
     }
 
-    private function login($sanitizedEntries, &$areCredentialsOK) {
+    private function login(Request $request = null, Application $app = null,$entries, &$areCredentialsOK) {        
         try {
+           echo $entries['email'];
+            
             // On vérifie l'existence de l'utilisateur
-            $this->utilisateurDAO->verifyUserCredentials($sanitizedEntries['email'], $sanitizedEntries['password']);
+            $this->utilisateurDAO->verifyUserCredentials($entries['email'], $entries['password']);
 
             // on enregistre l'utilisateur
-            $_SESSION['user'] = $sanitizedEntries['email'];
-            $_SESSION['userID'] = $this->utilisateurDAO->getUserIDByEmailAddress($_SESSION['user']);
+            $_SESSION['user'] = $entries['email'];
+            $_SESSION['userID'] = $this->utilisateurDAO->getUserIDByEmailAddress($entries['email']);
             // on redirige vers la page d'édition des films préférés
             // redirection vers la liste des préférences de films
-            header("Location: index.php?action=editFavoriteMoviesList");
-            exit;
+            //header("Location: index.php?action=editFavoriteMoviesList");
+            return $app->redirect($request->getBasePath() . '/favorite/list');
         } catch (Exception $ex) {
             $areCredentialsOK = false;
             $this->utilisateurDAO->getLogger()->error($ex->getMessage());
@@ -92,12 +92,21 @@ class HomeController extends Controller {
 
         // si la méthode POST est utilisée, cela signifie que le formulaire a été envoyé
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
-            // on "sainifie" les entrées
-            $sanitizedEntries = filter_input_array(INPUT_POST, ['firstName' => FILTER_SANITIZE_STRING,
-                'lastName' => FILTER_SANITIZE_STRING,
-                'email' => FILTER_SANITIZE_EMAIL,
-                'password' => FILTER_DEFAULT,
-                'passwordConfirmation' => FILTER_DEFAULT]);
+            // si la méthode POST a été employée
+           
+                $entries = $this->extractArrayFromPostRequest($request, ['firstName',
+                'lastName',
+                'email',
+                'password',
+                'passwordConfirmation']);
+
+                
+//            // on "sainifie" les entrées
+//            $sanitizedEntries = filter_input_array(INPUT_POST, ['firstName' => FILTER_SANITIZE_STRING,
+//                'lastName' => FILTER_SANITIZE_STRING,
+//                'email' => FILTER_SANITIZE_EMAIL,
+//                'password' => FILTER_DEFAULT,
+//                'passwordConfirmation' => FILTER_DEFAULT]);
 
             // si le prénom n'a pas été renseigné
             if ($sanitizedEntries['firstName'] === "") {
