@@ -8,6 +8,7 @@ use Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 use DateTime;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Description of ShowtimesController
@@ -166,7 +167,7 @@ class ShowtimesController {
      * @param \Semeformation\Mvc\Cinema_crud\Controllers\Application $app
      * @return type
      */
-    public function editShowtime($filmId, $cinemaId, Request $request = null, Application $app = null) {
+    public function editShowtime($filmId=null, $cinemaId=null, Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
@@ -284,10 +285,10 @@ class ShowtimesController {
                 // en fonction d'où je viens, je redirige
                 if (strstr($sanitizedEntries['from'], 'movie')) {
                     // header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
-                    $app->redirect($request->getBasePath() . '/showtime/movie/' . $filmId);
+                    $app->redirect($request->getBasePath() . '/showtime/movie/add' . $filmId);
                 } else {
                     //header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
-                    $app->redirect($request->getBasePath() . '/showtime/cinema/' . $cinemaId);                   
+                    $app->redirect($request->getBasePath() . '/showtime/cinema/add' . $cinemaId);                   
                 }
             }
         }
