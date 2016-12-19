@@ -178,7 +178,7 @@ class HomeController extends Controller {
         // On génère la vue Création d'un utilisateur
         $vue = new View("CreateUser");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer($request, $donnees);
+        return $vue->generer( $request ,$donnees);
     }
 
     public function logout() {

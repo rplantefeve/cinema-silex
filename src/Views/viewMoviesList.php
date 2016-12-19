@@ -50,6 +50,6 @@
         </tr>
     <?php endif; ?>
 </table>
-<form name="backToMainPage" action="index.php">
+<form name="backToMainPage" action="/Home">
     <input type="submit" value="Retour à l'accueil"/>
 </form>
