@@ -8,6 +8,7 @@ use Semeformation\Mvc\Cinema_crud\Controllers\MovieController;
 use Semeformation\Mvc\Cinema_crud\Controllers\ShowtimesController;
 use Semeformation\Mvc\Cinema_crud\Controllers\CinemaController;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Description of Router
