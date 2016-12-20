@@ -23,13 +23,13 @@
                 <td>
                     <form name="modifyMovie" action="<?= $request->getBasePath() . '/movie/edit/'.$film->getFilmId() ?>" method="GET">
                         <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
-                        <input type="image" src="images/modifyIcon.png" alt="Modify"/>
+                        <input type="image" src="../images/modifyIcon.png" alt="Modify"/>
                     </form>
                 </td>
                 <td>
                     <form name="deleteMovie" action="<?= $request->getBasePath() . '/movie/delete/'.$film->getFilmId() ?>" method="POST">
                         <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
-                        <input type="image" src="images/deleteIcon.png" alt="Delete"/>
+                        <input type="image" src="../images/deleteIcon.png" alt="Delete"/>
                     </form>
                 </td>
             <?php endif; ?>
