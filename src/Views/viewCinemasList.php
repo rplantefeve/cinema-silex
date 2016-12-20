@@ -24,16 +24,14 @@
             if ($isUserAdmin):
                 ?>
                 <td>
-                    <form name="modifyCinema" action="<?= $request->getBasePath() . '/'?>" method="GET">
-                        <input name="/cinema/edit/" type="hidden" value="<?= $cinema->getCinemaId();?>">
-                        <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
-                        <input type="image" src="images/modifyIcon.png" alt="Modify"/>
+                    <form name="modifyCinema" action="<?= $request->getBasePath() . '/cinema/edit/'.$cinema->getCinemaId();?>" method="GET">
+                        <input type="image" src="../images/modifyIcon.png" alt="Modify"/>
                     </form>
                 </td>
                 <td>
-                    <form name="deleteCinema" action="<?= $request->getBasePath() . '/cinema/'?>" method="POST">
+                    <form name="deleteCinema" action="<?= $request->getBasePath() . '/cinema/delete/'.$cinema->getCinemaId();?>" method="POST">
                         <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
-                        <input type="image" src="images/deleteIcon.png" alt="Delete"/>
+                        <input type="image" src="../images/deleteIcon.png" alt="Delete"/>
                     </form>
                 </td>
             <?php endif; ?>
@@ -44,8 +42,8 @@
         ?>
         <tr class="new">
             <td colspan="5">
-                <form name="addCinema" method="get" action="<?= $request->getBasePath() . '/cinema/edit'?>">
-                    <input name="cinemaID" type="hidden" value="{cinemaID}">
+                <form name="addCinema" method="get" action="<?= $request->getBasePath() . '/cinema/add'?>">
+   
                     <button class="add" type="submit">Cliquer ici pour ajouter un cinéma</button>
                 </form>
             </td>

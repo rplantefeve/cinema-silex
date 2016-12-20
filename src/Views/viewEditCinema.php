@@ -1,6 +1,6 @@
 <?php $this->titre = "Ajouter / Modifier un cinéma"; ?>
 <h1>Ajouter/Modifier un cinéma</h1>
-<form method="POST" name="editCinema" action="<?= $request->getBasePath() . 'cinema/edit/'?>">
+<form method="POST" name="editCinema" action="<?= $request->getBasePath() . '/cinema/edit/'?>">
     <label>Dénomination :</label>
     <input name="denomination" type="text" value="<?php
     if ($cinema) {
@@ -31,7 +31,7 @@
     ?>
     <input type="submit" name="saveEntry" value="Sauvegarder"/>
 </form>
-<form method="get" action="<?= $request->getBasePath() . '/home'?>">
-    <input type="hidden" name="action" value="cinema/list"/>
+<form method="get" action="<?= $request->getBasePath() . '/cinema/list'?>">
+    
     <input type="submit" name="backToList" value="Retour à la liste"/>
 </form>

@@ -5,13 +5,13 @@ use Symfony\Component\HttpFoundation\Request;       // Ajouté
 use Semeformation\Mvc\Cinema_crud\DAO\CinemaDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
-
+use Silex\Application;
 /**
  * Description of CinemaController
  *
  * @author User
  */
-class CinemaController {
+class CinemaController extends Controller{
 
     private $cinemaDAO;
 
@@ -74,9 +74,7 @@ class CinemaController {
             // si l'action demandée est retour en arrière
             if ($sanEntries['backToList'] !== null) {
                 // on redirige vers la page des cinémas
-                $url = $request->getBasePath() . '/home';
-                header($url);
-                exit;
+                return $app->redirect('/home');
             }
             // sinon (l'action demandée est la sauvegarde d'un cinéma)
             else {
@@ -94,9 +92,7 @@ class CinemaController {
                             $sanEntries['denomination'], $sanEntries['adresse']);
                 }
                 // on revient à la liste des cinémas
-                $url = $request->getBasePath() . '/cinema/list';
-                header($url);
-                exit;
+               return $app->redirect('/cinema/list');
             }
         }// si la page est chargée avec $_GET
         elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
@@ -143,11 +139,11 @@ class CinemaController {
         // si la méthode de formulaire est la méthode POST
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
-            // on "sainifie" les entrées
-//            $sanitizedEntries = filter_input_array(INPUT_POST,
-//                    ['cinemaID' => FILTER_SANITIZE_NUMBER_INT]);
+             //on "sainifie" les entrées
+           // $sanitizedEntries = filter_input_array(INPUT_POST,
+            //       ['cinemaID' => FILTER_SANITIZE_NUMBER_INT]);
             // Ajout $sanEntries
-            $sanEntries = $this->extractArrayFromPostRequest($request, ['cinemaID']);
+            $sanitizedEntries = $this->extractArrayFromPostRequest($request, ['cinemaID']);
 
             
             
@@ -156,9 +152,7 @@ class CinemaController {
             $this->cinemaDAO->deleteCinema($sanitizedEntries['cinemaID']);
         }
         // redirection vers la liste des cinémas
-       $url = $request->getBasePath() . '/cinema/list';
-         header($url);
-         exit;
+       return $app->redirect('cinema/list');
     }
 
 }
