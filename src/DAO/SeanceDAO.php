@@ -57,13 +57,13 @@ class SeanceDAO extends DAO {
         // trouver le film concerné grâce à son identifiant
         if (array_key_exists('FILMID', $row)) {
             $filmID = $row['FILMID'];
-            $film   = $this->filmDAO->getMovieByID($filmID);
+            $film = $this->filmDAO->getMovieByID($filmID);
             $seance->setFilm($film);
         }
         // trouver le cinéma concerné grâce à son identifiant
         if (array_key_exists('CINEMAID', $row)) {
             $cinemaID = $row['FILMID'];
-            $cinema   = $this->cinemaDAO->getCinemaByID($cinemaID);
+            $cinema = $this->cinemaDAO->getCinemaByID($cinemaID);
             $seance->setCinema($cinema);
         }
         return $seance;
@@ -77,13 +77,12 @@ class SeanceDAO extends DAO {
      */
     public function getMovieShowtimes($cinemaID, $filmID) {
         // requête qui permet de récupérer la liste des séances d'un film donné dans un cinéma donné
-        $requete   = "SELECT s.* FROM seance s"
+        $requete = "SELECT s.* FROM seance s"
                 . " WHERE s.filmID = :filmID"
                 . " AND s.cinemaID = :cinemaID";
         // on extrait les résultats
-        $resultats = $this->extraireNxN($requete,
-                array(
-            'filmID'   => $filmID,
+        $resultats = $this->extraireNxN($requete, array(
+            'filmID' => $filmID,
             'cinemaID' => $cinemaID));
         // on extrait les objets métiers des résultats
         return $this->extractObjects($resultats);
@@ -99,8 +98,7 @@ class SeanceDAO extends DAO {
         if ($films):
             // Boucle de récupération de toutes les séances indexés sur l'identifiant du film
             foreach ($films as $film) {
-                $seances[$film->getFilmId()] = $this->getMovieShowtimes($cinemaID,
-                        $film->getFilmId());
+                $seances[$film->getFilmId()] = $this->getMovieShowtimes($cinemaID, $film->getFilmId());
             }
             // on retourne le résultat
             return $seances;
@@ -117,12 +115,13 @@ class SeanceDAO extends DAO {
      */
     public function getAllCinemasShowtimesByMovieID($cinemas, $filmID) {
         // Boucle de récupération de toutes les séances indexés sur l'identifiant du film
-        foreach ($cinemas as $cinema) {
-            $seances[$cinema->getCinemaId()] = $this->getMovieShowtimes($cinema->getCinemaId(),
-                    $filmID);
+        if (!is_null($cinemas) && !is_null($filmID)) {
+            foreach ($cinemas as $cinema) {
+                $seances[$cinema->getCinemaId()] = $this->getMovieShowtimes($cinema->getCinemaId(), $filmID);
+            }
+            // on retourne le résultat
+            return $seances;
         }
-        // on retourne le résultat
-        return $seances;
     }
 
     /**
@@ -133,22 +132,20 @@ class SeanceDAO extends DAO {
      * @param datetime $dateheurefin
      * @param string $version
      */
-    public function insertNewShowtime($cinemaID, $filmID, $dateheuredebut,
-            $dateheurefin, $version): \PDOStatement {
+    public function insertNewShowtime($cinemaID, $filmID, $dateheuredebut, $dateheurefin, $version): \PDOStatement {
         // construction
-        $requete  = "INSERT INTO seance (cinemaID, filmID, heureDebut, heureFin, version) VALUES ("
+        $requete = "INSERT INTO seance (cinemaID, filmID, heureDebut, heureFin, version) VALUES ("
                 . ":cinemaID"
                 . ", :filmID"
                 . ", :heureDebut"
                 . ", :heureFin"
                 . ", :version)";
         // exécution
-        $resultat = $this->executeQuery($requete,
-                [':cinemaID'   => $cinemaID,
-            ':filmID'     => $filmID,
+        $resultat = $this->executeQuery($requete, [':cinemaID' => $cinemaID,
+            ':filmID' => $filmID,
             ':heureDebut' => $dateheuredebut,
-            ':heureFin'   => $dateheurefin,
-            ':version'    => $version]);
+            ':heureFin' => $dateheurefin,
+            ':version' => $version]);
 
         // log
         if ($this->logger) {
@@ -168,10 +165,9 @@ class SeanceDAO extends DAO {
      * @param datetime $dateheurefin
      * @param string $version
      */
-    public function updateShowtime($cinemaID, $filmID, $dateheuredebutOld,
-            $dateheurefinOld, $dateheuredebut, $dateheurefin, $version): \PDOStatement {
+    public function updateShowtime($cinemaID, $filmID, $dateheuredebutOld, $dateheurefinOld, $dateheuredebut, $dateheurefin, $version): \PDOStatement {
         // construction
-        $requete  = "UPDATE seance SET heureDebut = :heureDebut,"
+        $requete = "UPDATE seance SET heureDebut = :heureDebut,"
                 . " heureFin = :heureFin,"
                 . " version = :version"
                 . " WHERE cinemaID = :cinemaID"
@@ -179,14 +175,13 @@ class SeanceDAO extends DAO {
                 . " AND heureDebut = :heureDebutOld"
                 . " AND heureFin = :heureFinOld";
         // exécution
-        $resultat = $this->executeQuery($requete,
-                [':cinemaID'      => $cinemaID,
-            ':filmID'        => $filmID,
+        $resultat = $this->executeQuery($requete, [':cinemaID' => $cinemaID,
+            ':filmID' => $filmID,
             ':heureDebutOld' => $dateheuredebutOld,
-            ':heureFinOld'   => $dateheurefinOld,
-            ':heureDebut'    => $dateheuredebut,
-            ':heureFin'      => $dateheurefin,
-            ':version'       => $version]);
+            ':heureFinOld' => $dateheurefinOld,
+            ':heureDebut' => $dateheuredebut,
+            ':heureFin' => $dateheurefin,
+            ':version' => $version]);
 
         // log
         if ($this->logger) {
@@ -208,11 +203,10 @@ class SeanceDAO extends DAO {
                 . "WHERE cinemaID = :cinemaID "
                 . "AND filmID = :filmID "
                 . "AND heureDebut = :heureDebut"
-                . " AND heureFin = :heureFin",
-                [':cinemaID'   => $cinemaID,
-            ':filmID'     => $filmID,
+                . " AND heureFin = :heureFin", [':cinemaID' => $cinemaID,
+            ':filmID' => $filmID,
             ':heureDebut' => $heureDebut,
-            ':heureFin'   => $heureFin]);
+            ':heureFin' => $heureFin]);
 
         if ($this->logger) {
             $this->logger->info('Showtime for the movie ' . $filmID . ' and the cinema ' . $cinemaID . ' successfully deleted.');
