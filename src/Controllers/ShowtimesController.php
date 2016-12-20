@@ -124,23 +124,23 @@ class ShowtimesController extends Controller {
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
             // on assainie les variables
-            $entries = $this->extractArrayFromPostRequest($request, ['cinemaID', 'filmID', 'heureDebut', 'heureFin', 'version', 'from']);
+            $entries = $this->extractArrayFromPostRequest($request, ['heureDebut', 'heureFin', 'version', 'from']);
 
             // suppression de la séance
-            $this->seanceDAO->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
-            );
+            $this->seanceDAO->deleteShowtime($cinemaId, $filmId, $entries['heureDebut'], $entries['heureFin']);
             // en fonction d'où je viens, je redirige
-            if (strstr($sanitizedEntries['from'], 'movie')) {
-                header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
-                exit;
+            if (strstr($entries['from'], 'movie')) {
+                return $app->redirect($request->getBasePath() . '/showtime/movie/' . $filmId);
+                //header('Location: index.php?action=movieShowtimes&filmID=' . $entries['filmID']);
+                //exit;
             } else {
-                header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
-                exit;
+                return $app->redirect($request->getBasePath() . '/showtime/cinema/' . $cinemaId);
+                //header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $entries['cinemaID']);
+                //exit;
             }
         } else {
             // renvoi à la page d'accueil
-            header('Location: index.php');
-            exit;
+            return $app->redirect($request->getBasePath() . '/home');
         }
     }
 
