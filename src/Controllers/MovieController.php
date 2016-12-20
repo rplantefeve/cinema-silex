@@ -25,7 +25,7 @@ class MovieController extends Controller{
     /**
      * Route Liste des films
      */
-    function moviesList() {
+    function moviesList(Request $request = null, Application $app = null) {
         $isUserAdmin = false;
 
         session_start();
