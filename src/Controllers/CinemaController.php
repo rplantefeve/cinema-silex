@@ -74,7 +74,7 @@ class CinemaController extends Controller{
             // si l'action demandée est retour en arrière
             if ($sanEntries['backToList'] !== null) {
                 // on redirige vers la page des cinémas
-                return $app->redirect('/home');
+               return $app->redirect($request->getBasePath() . '/cinema/list');
             }
             // sinon (l'action demandée est la sauvegarde d'un cinéma)
             else {
@@ -92,7 +92,7 @@ class CinemaController extends Controller{
                             $sanEntries['denomination'], $sanEntries['adresse']);
                 }
                 // on revient à la liste des cinémas
-               return $app->redirect('/cinema/list');
+              return $app->redirect($request->getBasePath() . '/cinema/list');
             }
         }// si la page est chargée avec $_GET
         elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
@@ -152,7 +152,7 @@ class CinemaController extends Controller{
             $this->cinemaDAO->deleteCinema($sanitizedEntries['cinemaID']);
         }
         // redirection vers la liste des cinémas
-       return $app->redirect('cinema/list');
+       return $app->redirect($request->getBasePath() . '/cinema/list');
     }
 
 }

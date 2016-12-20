@@ -1,6 +1,12 @@
 <?php $this->titre = "Ajouter / Modifier un cinéma"; ?>
 <h1>Ajouter/Modifier un cinéma</h1>
-<form method="POST" name="editCinema" action="<?= $request->getBasePath() . '/cinema/edit/'?>">
+<?php
+    if ($cinema) : ?>
+<form method="POST" name="editCinema" action="<?= $request->getBasePath() . '/cinema/edit/'.$cinema->getCinemaId(); ?>">
+    <?php else : ?>
+<form method="POST" name="editCinema" action="<?= $request->getBasePath() . '/cinema/add'; ?>">
+    <?php endif; ?>
+    
     <label>Dénomination :</label>
     <input name="denomination" type="text" value="<?php
     if ($cinema) {

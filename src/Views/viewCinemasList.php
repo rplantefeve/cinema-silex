@@ -25,11 +25,13 @@
                 ?>
                 <td>
                     <form name="modifyCinema" action="<?= $request->getBasePath() . '/cinema/edit/'.$cinema->getCinemaId();?>" method="GET">
+                        <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
                         <input type="image" src="../images/modifyIcon.png" alt="Modify"/>
                     </form>
                 </td>
                 <td>
                     <form name="deleteCinema" action="<?= $request->getBasePath() . '/cinema/delete/'.$cinema->getCinemaId();?>" method="POST">
+                        
                         <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
                         <input type="image" src="../images/deleteIcon.png" alt="Delete"/>
                     </form>
