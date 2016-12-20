@@ -37,11 +37,11 @@
 <div>
     <header>
         <h1>Gestion des cinémas</h1>
-        <form name="cinemasList" method="GET" action="index.php">
-            <input name="action" type="hidden" value="cinemasList"/>
+        <form name="cinemasList" method="GET" action="<?= $request->getBasePath() . '/cinema/list' ?>">
+            
             <input type="submit" value="Consulter la liste des cinémas"/>
         </form>
-        <form name="moviesList" method="GET" action="index.php">
+        <form name="moviesList" method="GET" action="<?= $request->getBasePath() . '/movie/list' ?>">
             <input name="action" type="hidden" value="moviesList"/>
             <input type="submit" value="Consulter la liste des films"/>
         </form>

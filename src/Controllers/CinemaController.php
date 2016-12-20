@@ -15,7 +15,7 @@ class CinemaController {
 
     private $cinemaDAO;
 
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger = null) {
         $this->cinemaDAO = new CinemaDAO($logger);
     }
 
@@ -37,7 +37,8 @@ class CinemaController {
         // On génère la vue films
         $vue = new View("CinemasList");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+            
+        return $vue->generer($request, [
             'cinemas'     => $cinemas,
             'isUserAdmin' => $isUserAdmin]);
     }
@@ -51,7 +52,6 @@ class CinemaController {
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
             // renvoi à la page d'accueil
             return $app->redirect('/home');
-            exit;
         }
 
         // variable qui sert à conditionner l'affichage du formulaire
@@ -74,7 +74,8 @@ class CinemaController {
             // si l'action demandée est retour en arrière
             if ($sanEntries['backToList'] !== null) {
                 // on redirige vers la page des cinémas
-                header('Location: index.php?action=cinemasList');
+                $url = $request->getBasePath() . '/home';
+                header($url);
                 exit;
             }
             // sinon (l'action demandée est la sauvegarde d'un cinéma)
@@ -93,7 +94,8 @@ class CinemaController {
                             $sanEntries['denomination'], $sanEntries['adresse']);
                 }
                 // on revient à la liste des cinémas
-                header('Location: index.php?action=cinemasList');
+                $url = $request->getBasePath() . '/cinema/list';
+                header($url);
                 exit;
             }
         }// si la page est chargée avec $_GET
@@ -121,7 +123,7 @@ class CinemaController {
         // On génère la vue films
         $vue = new View("EditCinema");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer([
+        return $vue->generer($request,[
             'cinema'        => $cinema,
             'isItACreation' => $isItACreation,
         ]);
@@ -136,7 +138,6 @@ class CinemaController {
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
             // renvoi à la page d'accueil
             return $app->redirect('/home');
-            exit;
         }
 
         // si la méthode de formulaire est la méthode POST
@@ -155,8 +156,9 @@ class CinemaController {
             $this->cinemaDAO->deleteCinema($sanitizedEntries['cinemaID']);
         }
         // redirection vers la liste des cinémas
-        header("Location: index.php?action=cinemasList");
-        exit;
+       $url = $request->getBasePath() . '/cinema/list';
+         header($url);
+         exit;
     }
 
 }

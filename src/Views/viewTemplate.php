@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title><?= $title ?></title>
-        <link type="text/css" href="css/cinema.css" rel="stylesheet"/>
+        <!-- ajoute ../ pour chemin css -->
+        <link type="text/css" href="../css/cinema.css" rel="stylesheet"/>
     </head>
     <body>
         <div id="content">

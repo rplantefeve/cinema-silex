@@ -17,7 +17,7 @@ $app->post('/login',
 ->bind('login');
 // CinemaList, editCinema, delete cinema, add cinema team papat
 $app->match('/cinema/list',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::cinemaList')
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::cinemasList')
 ->bind('cinema/list');
 
 $app->post('/movie/edit',
@@ -27,7 +27,7 @@ $app->match('/cinema/edit/{cinemaID}',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::editCinema')
 ->bind('cinema/edit/{cinemaID}');
 
-$app->match('/cinema/add',
+$app->get('/cinema/add',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\CinemaController::editCinema/add')
 ->bind('cinema/add');
 

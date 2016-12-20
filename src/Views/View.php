@@ -3,7 +3,6 @@
 namespace Semeformation\Mvc\Cinema_crud\Views;
 use Symfony\Component\HttpFoundation\Request;
 
-use \Symfony\Component\HttpFoundation\Request;
 use Exception;
 
 /**
