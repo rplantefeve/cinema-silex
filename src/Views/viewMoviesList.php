@@ -14,7 +14,7 @@
             <td><?= $film->getTitre(); ?></td>
             <td><?= $film->getTitreOriginal(); ?></td>
             <td>
-                <form name="movieShowtimes" action="<?= $request->getBasePath() . '/showtime/movie/' ?>" method="GET">
+                <form name="movieShowtimes" action="<?= $request->getBasePath() . '/showtime/movie/' . $film->getFilmId() ?>" method="GET">
                     <input name="filmID" type="hidden" value="<?= $film->getFilmId() ?>"/>
                     <input type="submit" value="Consulter les séances"/>
                 </form>

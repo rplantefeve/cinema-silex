@@ -9,7 +9,6 @@ use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 use Exception;
-use Silex\Application;
 
 /**
  * Description of HomeController

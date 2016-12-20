@@ -12,9 +12,6 @@ use Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 use DateTime;
-use Symfony\Component\HttpFoundation\Request;
-use Silex\Application;
-use Semeformation\Mvc\Cinema_crud\Controllers\Controller;
 
 /**
  * Description of ShowtimesController
