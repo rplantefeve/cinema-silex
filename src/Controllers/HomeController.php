@@ -50,7 +50,7 @@ class HomeController extends Controller {
             if ($request->isMethod('POST')) {
                 // on "sainifie" les entrées
                 $entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);                
-                $this->login($request,$app,$entries, $areCredentialsOK);
+                $this->login($entries, $areCredentialsOK, $request, $app);
             }
         }
         // On génère la vue Accueil

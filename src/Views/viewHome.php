@@ -30,7 +30,7 @@
             <input type="hidden" name="action" value="editFavoriteMoviesList"/>
             <input type="submit" value="Editer ma liste de films préférés"/>
         </form>
-        <a href="<?= $app->redirect($request->getBasePath() . '/logout') ?>">Se déconnecter</a>
+        <a href="<?= $request->getBasePath() . '/logout' ?>">Se déconnecter</a>
     <?php endif; ?>
 </div>
 <!-- Gestion des cinémas -->

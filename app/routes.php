@@ -18,7 +18,7 @@ $app->match('/user/add',
 ->bind('/user/add');
 
 $app->post('/login',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::login')
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
 ->bind('login');
 
 $app->post('/movie/edit',
