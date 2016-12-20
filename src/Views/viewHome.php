@@ -7,7 +7,7 @@
     // si pas encore authentifié
     if (!$loginSuccess):
         ?>
-<form method="POST" name="editFavoriteMoviesList" action="<?= $request->getBasePath() . '/login' ?>"
+<form method="POST" name="editFavoriteMoviesList" action="<?= $request->getBasePath() . '/login' ?>" >
             <label>Adresse email : </label>
             <input type="email" name="email" required/>
             <label>Mot de passe  : </label>

@@ -80,7 +80,7 @@ class ShowtimesController extends Controller {
 
       
         // si l'identifiant du cinéma a bien été passé en GET
-        if ($cinemaId) {
+        if (is_numeric($cinemaId)) {
            
             // puis on récupère les informations du cinéma en question
             $cinema = $this->seanceDAO->getCinemaDAO()->getCinemaByID($cinemaId);
