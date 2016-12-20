@@ -68,9 +68,9 @@ class Router {
                 } elseif ($sanitizedEntries['action'] == "cinemaShowtimes") {
                     // Activation de la route cinemaShowtimes
                     $this->showtimesCtrl->cinemaShowtimes();
-                } elseif ($sanitizedEntries['action'] == "editShowtime") {
-                    // Activation de la route editShowtime
-                    $this->showtimesCtrl->editShowtime();
+//                } elseif ($sanitizedEntries['action'] == "editShowtime") {
+//                    // Activation de la route editShowtime
+//                    $this->showtimesCtrl->editShowtime();
                 } elseif ($sanitizedEntries['action'] == "deleteShowtime") {
                     // Activation de la route deleteShowtime
                     $this->showtimesCtrl->deleteShowtime();

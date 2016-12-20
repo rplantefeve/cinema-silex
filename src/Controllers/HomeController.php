@@ -3,6 +3,7 @@
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
 use Semeformation\Mvc\Cinema_crud\Controllers\Controller;
 use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
