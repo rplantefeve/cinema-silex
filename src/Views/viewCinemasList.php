@@ -24,16 +24,14 @@
             if ($isUserAdmin):
                 ?>
                 <td>
-                    <form name="modifyCinema" action="index.php" method="GET">
-                        <input name="action" type="hidden" value="editCinema">
-                        <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
-                        <input type="image" src="images/modifyIcon.png" alt="Modify"/>
+                    <form name="modifyCinema" action="<?= $request->getBasePath() . '/cinema/edit/'.$cinema->getCinemaId();?>" method="GET">
+                        <input type="image" src="../images/modifyIcon.png" alt="Modify"/>
                     </form>
                 </td>
                 <td>
-                    <form name="deleteCinema" action="index.php?action=deleteCinema" method="POST">
+                    <form name="deleteCinema" action="<?= $request->getBasePath() . '/cinema/delete/'.$cinema->getCinemaId();?>" method="POST">
                         <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
-                        <input type="image" src="images/deleteIcon.png" alt="Delete"/>
+                        <input type="image" src="../images/deleteIcon.png" alt="Delete"/>
                     </form>
                 </td>
             <?php endif; ?>
@@ -44,8 +42,8 @@
         ?>
         <tr class="new">
             <td colspan="5">
-                <form name="addCinema" method="get">
-                    <input name="action" type="hidden" value="editCinema">
+                <form name="addCinema" method="get" action="<?= $request->getBasePath() . '/cinema/add'?>">
+   
                     <button class="add" type="submit">Cliquer ici pour ajouter un cinéma</button>
                 </form>
             </td>
@@ -53,6 +51,6 @@
 
     <?php endif; ?>
 </table>
-<form name="backToMainPage" action="index.php">
+<form name="backToMainPage" action="<?= $request->getBasePath() . '/home'?>">
     <input type="submit" value="Retour à l'accueil"/>
 </form>
