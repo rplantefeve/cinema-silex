@@ -4,7 +4,7 @@
     <h2><?= $cinema->getAdresse(); ?></h2>
     <?php if ($adminConnected && $filmsUnplanned) : ?>
         <!--<form action="index.php" method="get">-->
-       <form method="get"  action="<?= $request->getBasePath() . '/showtime/cinema/add/'.$cinema->getCinemaId() ?>">
+        <form method="get"  action="<?= $request->getBasePath() . '/showtime/cinema/add/' . $cinema->getCinemaId() ?>">
             <fieldset>
                 <legend>Ajouter un film à la programmation</legend>
                 <!--<input name="cinemaID" type="hidden" value="<?= $cinema->getCinemaId() ?>">-->
@@ -51,13 +51,12 @@
                     // nous sommes en Français
                     setlocale(LC_TIME, 'fra_fra');
                     // date du jour de projection de la séance
-                    $jour         = $seance->getHeureDebut();
+                    $jour = $seance->getHeureDebut();
                     // On convertit pour un affichage en français
-                    $jourConverti = utf8_encode(strftime('%d %B %Y',
-                                    $jour->getTimestamp()));
+                    $jourConverti = utf8_encode(strftime('%d %B %Y', $jour->getTimestamp()));
 
                     $heureDebut = $seance->getHeureDebut()->format('H\hi');
-                    $heureFin   = $seance->getHeureFin()->format('H\hi');
+                    $heureFin = $seance->getHeureFin()->format('H\hi');
                     ?>
                     <tr>
                         <td><?= $jourConverti ?></td>
@@ -66,17 +65,7 @@
                         <td><?= $seance->getVersion() ?></td>
                         <?php if ($adminConnected): ?>
                             <td>
-<!--                                <form name="modifyMovieShowtime" method="GET">
-                                    <input type="hidden" name="action" value="editShowtime">
-                                    <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
-                                    <input type="hidden" name="filmID" value="<?=  $film->getFilmId() ?>"/>
-                                    <input type="hidden" name="action" value="editShowtime">
--->
-                                    <form name="modifyMovieShowtime" method="GET" 
-                                     action="<?= $request->getBasePath() . '/showtime/edit/'.
-                                     $film->getFilmId().'/'.$cinema->getCinemaId() ?>">      
-                                
-                                    
+                                <form name="modifyMovieShowtime" method="GET" action="<?= $request->getBasePath() . '/showtime/edit/' . $film->getFilmId() . '/' . $cinema->getCinemaId() ?>">
                                     <input type="hidden" name="heureDebut" value="<?= $seance->getHeureDebut()->format('Y-m-d H:i') ?>"/>
                                     <input type="hidden" name="heureFin" value="<?= $seance->getHeureFin()->format('Y-m-d H:i') ?>"/>
                                     <input type="hidden" name="version" value="<?= $seance->getVersion() ?>"/>
@@ -85,7 +74,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form name="deleteMovieShowtime" action="index.php?action=deleteShowtime" method="POST">
+                                <form name="deleteMovieShowtime" action="<?= $request->getBasePath() . '/showtime/delete/'.$film->getFilmId() . '/' . $cinema->getCinemaId() ?>" method="POST">
                                     <input type="hidden" name="cinemaID" value="<?= $cinema->getcinemaId() ?>"/>
                                     <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
                                     <input type="hidden" name="heureDebut" value="<?= $seance->getHeureDebut()->format('Y-m-d H:i') ?>"/>

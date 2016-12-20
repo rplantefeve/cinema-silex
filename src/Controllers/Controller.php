@@ -12,8 +12,7 @@ class Controller {
      * @param array $variables Tableau de noms de variables à récupérer
      * @return array Tableau de variables extraites de la requête POST
      */
-    protected function extractArrayFromPostRequest(Request $request,
-            array $variables): array {
+    protected function extractArrayFromPostRequest(Request $request, array $variables): array {
         $entries = array();
 // boucle de parcours des variables à extraire
         foreach ($variables as $variable) {
@@ -28,8 +27,7 @@ class Controller {
      * @param array $variables Tableau de noms de variables à récupérer
      * @return array Tableau de variables extraites de la requête POST
      */
-    protected function extractArrayFromGetRequest(Request $request,
-            array $variables): array {
+    protected function extractArrayFromGetRequest(Request $request, array $variables): array {
         $entries = array();
 // boucle de parcours des variables à extraire
         foreach ($variables as $variable) {
@@ -37,5 +35,4 @@ class Controller {
         }
         return $entries;
     }
-
 }

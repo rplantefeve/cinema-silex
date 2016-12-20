@@ -50,7 +50,7 @@ class HomeController extends Controller {
             if ($request->isMethod('POST')) {
                 // on "sainifie" les entrées
                 $entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);                
-                $this->login($request,$app,$entries, $areCredentialsOK);
+                $this->login($entries, $areCredentialsOK, $request, $app);
             }
         }
         // On génère la vue Accueil
@@ -61,7 +61,7 @@ class HomeController extends Controller {
                     'loginSuccess' => $loginSuccess]);
     }
 
-    private function login(Request $request = null, Application $app = null,$entries, &$areCredentialsOK) {        
+    private function login($entries, &$areCredentialsOK , Request $request = null, Application $app = null) {        
         try { 
             
             // On vérifie l'existence de l'utilisateur
@@ -182,10 +182,10 @@ class HomeController extends Controller {
         return $vue->generer( $request ,$donnees);
     }
 
-    public function logout() {
+    public function logout(Request $request = null, Application $app = null) {
         session_start();
         session_destroy();
-        return $app->redirect('/home');
+        return $app->redirect($request->getBasePath().'/home');
     }
 
     public function error(Request $request = null, Application $app = null,$e) {

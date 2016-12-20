@@ -1,33 +1,34 @@
 <?php
 
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
-
+use Symfony\Component\HttpFoundation\Request;
 use Semeformation\Mvc\Cinema_crud\DAO\UtilisateurDAO;
 use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
 use Semeformation\Mvc\Cinema_crud\DAO\PrefereDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
+use Silex\Application;
 
 /**
  * Description of FavoriteController
  *
  * @author User
  */
-class FavoriteController {
+class FavoriteController  extends Controller{
 
     private $prefereDAO;
 
     /**
      * Constructeur de la classe
      */
-    public function __construct(LoggerInterface $logger) {
+    public function __construct(LoggerInterface $logger = null) {
         $this->prefereDAO = new PrefereDAO($logger);
         // Ajout du DAO Utilisateur et Film pour le DAO Prefere
         $this->prefereDAO->setUtilisateurDAO(new UtilisateurDAO($logger));
         $this->prefereDAO->setFilmDAO(new FilmDAO($logger));
     }
 
-    public function editFavoriteMoviesList() {
+    public function editFavoriteMoviesList(Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user",
@@ -47,7 +48,7 @@ class FavoriteController {
         // On génère la vue Films préférés
         $vue = new View("FavoriteMoviesList");
         // En passant les variables nécessaires à son bon affichage
-        $vue->generer(array(
+       return $vue->generer($request,array(
             'utilisateur' => $utilisateur,
             'preferes' => $preferes));
     }

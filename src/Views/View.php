@@ -2,7 +2,7 @@
 
 namespace Semeformation\Mvc\Cinema_crud\Views;
 
-use \Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Exception;
 
 /**
@@ -31,9 +31,8 @@ class View {
         $donnees['request'] = $request;
         // Génération de la partie spécifique de la vue
         $content = $this->genererFichier($this->fichier, $donnees);
-        // utilisation du template avec chargement des données spécifiques        
-        $vue = $this->genererFichier(__DIR__ . '/viewTemplate.php', ['title' => $this->titre,
-            'content' => $content]);
+        // utilisation du template avec chargement des données spécifiques
+        $vue = $this->genererFichier(__DIR__ . '/viewTemplate.php', ['title' => $this->titre, 'content' => $content]);
         // Renvoi de la vue générée au navigateur
         return $vue;
     }
