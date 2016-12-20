@@ -17,7 +17,7 @@ $app->match('/user/add',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::createNewUser')
 ->bind('/user/add');
 
-$app->match('/login',
+$app->post('/login',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::login')
 ->bind('login');
 
@@ -60,3 +60,7 @@ $app->get('/showtime/cinema/{cinemaId}',
 $app->get('/logout',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::logout')
 ->bind('logout');
+
+$app->get('/favorite/list',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\FavoriteController::editFavoriteMoviesList')
+->bind('editFavoriteMoviesList');

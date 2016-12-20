@@ -61,7 +61,7 @@ class HomeController extends Controller {
                     'loginSuccess' => $loginSuccess]);
     }
 
-    private function login(Request $request = null, Application $app = null,$entries, &$areCredentialsOK) {        
+    private function login($entries, &$areCredentialsOK , Request $request = null, Application $app = null) {        
         try { 
             
             // On vérifie l'existence de l'utilisateur

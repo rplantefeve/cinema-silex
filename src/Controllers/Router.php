@@ -91,7 +91,7 @@ class Router {
                     $this->homeCtrl->logout();
                      } elseif ($sanitizedEntries['action'] == "login") {
                     // Activation de la route createNewUser
-                    $this->homeCtrl->login();
+                    HomeController($logger)::login();
                 } else {
                     // Activation de la route par défaut (page d'accueil)
                     $this->homeCtrl->home();
