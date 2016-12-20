@@ -5,7 +5,7 @@ $this->titre = "Gestion des cinémas - Ajouter une séance";
     <h1>Séances du cinéma <?= $cinema->getDenomination() ?></h1>
     <h2>Pour le film <?= $film->getTitre() ?></h2>
 </header>
-<form method="post">
+<form method="post"  >
     <fieldset>
         <label for="datedebut">Date de début : </label>
         <input id="datedebut" type="text" name="datedebut" placeholder="jj/mm/aaaa" value="<?php

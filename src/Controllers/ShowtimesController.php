@@ -9,13 +9,15 @@ use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
+use Semeformation\Mvc\Cinema_crud\Controllers\Controller;
 
 /**
  * Description of ShowtimesController
  *
  * @author User
  */
-class ShowtimesController {
+class ShowtimesController extends Controller {
 
     private $seanceDAO;
 
@@ -167,11 +169,13 @@ class ShowtimesController {
      * @param \Semeformation\Mvc\Cinema_crud\Controllers\Application $app
      * @return type
      */
-    public function editShowtime($filmId=null, $cinemaId=null, Request $request = null, Application $app = null) {
+    public function editShowtime($filmId, $cinemaId, Request $request = null, Application $app = null) {
+       
         session_start();
+        echo "hello";
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
-        if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
-            // renvoi à la page d'accueil
+        if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {            
+            // renvoi à la page d'accueil            
             return $app->redirect($request->getBasePath() . '/home');
            // header('Location:index.php');
         }
@@ -245,6 +249,7 @@ class ShowtimesController {
             }
             // sinon, on est en POST
         } else if ($request->isMethod('POST')) {
+            
             // on assainie les variables
             //$entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);
 //            $sanitizedEntries = filter_input_array(INPUT_POST, ['datedebut' => FILTER_SANITIZE_STRING,
@@ -259,6 +264,7 @@ class ShowtimesController {
               $sanitizedEntries = $this->extractArrayFromPostRequest($request, ['datedebut', 
                 'heureDebut','datefin','heureFin','version','dateheurefinOld',
                  'dateheuredebutOld','version','from','modificationInProgress']);
+              echo $sanitizedEntries['datedebut'];
             // si toutes les valeurs sont renseignées
             if ($sanitizedEntries && isset($cinemaId, $filmId, $sanitizedEntries['datedebut'], $sanitizedEntries['heuredebut'], $sanitizedEntries['datefin'], $sanitizedEntries['heurefin'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $sanitizedEntries['version'], $sanitizedEntries['from'])) {
                 // nous sommes en Français
