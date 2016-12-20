@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Semeformation\Mvc\Cinema_crud\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -58,7 +59,7 @@ class ShowtimesController extends Controller {
         $vue = new View("MovieShowtimes");
         // En passant les variables nécessaires à son bon affichage
 
-        return $vue->generer([
+        return $vue->generer($request,[
                     'cinemas' => $cinemas,
                     'film' => $film,
                     'seances' => $seances,
@@ -80,7 +81,7 @@ class ShowtimesController extends Controller {
 
       
         // si l'identifiant du cinéma a bien été passé en GET
-        if (is_numeric($cinemaId)) {
+        if ($cinemaId) {
            
             // puis on récupère les informations du cinéma en question
             $cinema = $this->seanceDAO->getCinemaDAO()->getCinemaByID($cinemaId);
@@ -112,42 +113,35 @@ class ShowtimesController extends Controller {
     /**
      * Route pour supprimer une séance
      */
-    public function deleteShowtime() {
+    public function deleteShowtime($filmId, $cinemaId, Request $request = null, Application $app = null) {
         session_start();
         // si l'utilisateur n'est pas connecté
         if (!array_key_exists("user", $_SESSION)) {
             // renvoi à la page d'accueil
-            header('Location: index.php');
-            exit;
+            return $app->redirect($request->getBasePath() . '/home');
         }
 
         // si la méthode de formulaire est la méthode POST
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
 
             // on assainie les variables
-            $sanitizedEntries = filter_input_array(INPUT_POST, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT,
-                'filmID' => FILTER_SANITIZE_NUMBER_INT,
-                'heureDebut' => FILTER_SANITIZE_STRING,
-                'heureFin' => FILTER_SANITIZE_STRING,
-                'version' => FILTER_SANITIZE_STRING,
-                'from' => FILTER_SANITIZE_STRING
-            ]);
+            $entries = $this->extractArrayFromPostRequest($request, ['heureDebut', 'heureFin', 'version', 'from']);
 
             // suppression de la séance
-            $this->seanceDAO->deleteShowtime($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['heureDebut'], $sanitizedEntries['heureFin']
-            );
+            $this->seanceDAO->deleteShowtime($cinemaId, $filmId, $entries['heureDebut'], $entries['heureFin']);
             // en fonction d'où je viens, je redirige
-            if (strstr($sanitizedEntries['from'], 'movie')) {
-                header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
-                exit;
+            if (strstr($entries['from'], 'movie')) {
+                return $app->redirect($request->getBasePath() . '/showtime/movie/' . $filmId);
+                //header('Location: index.php?action=movieShowtimes&filmID=' . $entries['filmID']);
+                //exit;
             } else {
-                header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
-                exit;
+                return $app->redirect($request->getBasePath() . '/showtime/cinema/' . $cinemaId);
+                //header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $entries['cinemaID']);
+                //exit;
             }
         } else {
             // renvoi à la page d'accueil
-            header('Location: index.php');
-            exit;
+            return $app->redirect($request->getBasePath() . '/home');
         }
     }
 

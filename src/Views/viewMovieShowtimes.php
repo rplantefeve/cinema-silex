@@ -76,9 +76,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form name="deleteMovieShowtime" action="index.php?action=deleteShowtime" method="POST">
-                                    <input type="hidden" name="cinemaID" value="<?= $cinema->getCinemaId() ?>"/>
-                                    <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
+                                <form name="deleteMovieShowtime" action="<?= $request->getBasePath() . '/showtime/delete/'.$film->getFilmId() . '/' . $cinema->getCinemaId() ?>" method="POST">
                                     <input type="hidden" name="heureDebut" value="<?= $seance->getHeureDebut()->format('Y-m-d H:i') ?>"/>
                                     <input type="hidden" name="heureFin" value="<?= $seance->getHeureFin()->format('Y-m-d H:i') ?>"/>
                                     <input type="hidden" name="version" value="<?= $seance->getVersion() ?>"/>

@@ -33,6 +33,10 @@ $app->get('/movie/delete',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::deleteMovie')
 ->bind('/movie/delete');
 
+$app->post('/showtime/delete/{filmId}/{cinemaId}',
+'Semeformation\\Mvc\\Cinema_crud\\controllers\\ShowtimesController::deleteShowtime')
+->bind('/showtime/delete');
+
 $app->get('/movie/list',
 'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::moviesList')
 ->bind('moviesList');
