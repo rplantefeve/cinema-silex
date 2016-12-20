@@ -12,6 +12,9 @@ use Semeformation\Mvc\Cinema_crud\DAO\SeanceDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
 use DateTime;
+use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
+use Semeformation\Mvc\Cinema_crud\Controllers\Controller;
 
 /**
  * Description of ShowtimesController
@@ -148,13 +151,15 @@ class ShowtimesController extends Controller {
     /**
      * Route pour créer/modifier une séance
      */
-    public function editShowtime() {
+    public function editShowtime($filmId, $cinemaId, Request $request = null, Application $app = null) {
+       
         session_start();
+        echo "hello";
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
-        if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
-            // renvoi à la page d'accueil
-            header('Location: index.php');
-            exit;
+        if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {            
+            // renvoi à la page d'accueil            
+            return $app->redirect($request->getBasePath() . '/home');
+           // header('Location:index.php');
         }
 
         // init. des flags. Etat par défaut => je viens du cinéma et je créé
@@ -225,19 +230,23 @@ class ShowtimesController extends Controller {
                 exit();
             }
             // sinon, on est en POST
-        } else if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') == 'POST') {
+        } else if ($request->isMethod('POST')) {
+            
             // on assainie les variables
-            $sanitizedEntries = filter_input_array(INPUT_POST, ['cinemaID' => FILTER_SANITIZE_NUMBER_INT,
-                'filmID' => FILTER_SANITIZE_NUMBER_INT,
-                'datedebut' => FILTER_SANITIZE_STRING,
-                'heuredebut' => FILTER_SANITIZE_STRING,
-                'datefin' => FILTER_SANITIZE_STRING,
-                'heurefin' => FILTER_SANITIZE_STRING,
-                'dateheurefinOld' => FILTER_SANITIZE_STRING,
-                'dateheuredebutOld' => FILTER_SANITIZE_STRING,
-                'version' => FILTER_SANITIZE_STRING,
-                'from' => FILTER_SANITIZE_STRING,
-                'modificationInProgress' => FILTER_SANITIZE_STRING]);
+            //$entries = $this->extractArrayFromPostRequest($request, ['email', 'password']);
+//            $sanitizedEntries = filter_input_array(INPUT_POST, ['datedebut' => FILTER_SANITIZE_STRING,
+//                'heuredebut' => FILTER_SANITIZE_STRING,
+//                'datefin' => FILTER_SANITIZE_STRING,
+//                'heurefin' => FILTER_SANITIZE_STRING,
+//                'dateheurefinOld' => FILTER_SANITIZE_STRING,
+//                'dateheuredebutOld' => FILTER_SANITIZE_STRING,
+//                'version' => FILTER_SANITIZE_STRING,
+//                'from' => FILTER_SANITIZE_STRING,
+//                'modificationInProgress' => FILTER_SANITIZE_STRING]);
+              $sanitizedEntries = $this->extractArrayFromPostRequest($request, ['datedebut', 
+                'heureDebut','datefin','heureFin','version','dateheurefinOld',
+                 'dateheuredebutOld','version','from','modificationInProgress']);
+              echo $sanitizedEntries['datedebut'];
             // si toutes les valeurs sont renseignées
             if ($sanitizedEntries && isset($sanitizedEntries['cinemaID'], $sanitizedEntries['filmID'], $sanitizedEntries['datedebut'], $sanitizedEntries['heuredebut'], $sanitizedEntries['datefin'], $sanitizedEntries['heurefin'], $sanitizedEntries['dateheuredebutOld'], $sanitizedEntries['dateheurefinOld'], $sanitizedEntries['version'], $sanitizedEntries['from'])) {
                 // nous sommes en Français
@@ -255,11 +264,11 @@ class ShowtimesController extends Controller {
                 }
                 // en fonction d'où je viens, je redirige
                 if (strstr($sanitizedEntries['from'], 'movie')) {
-                    header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
-                    exit;
+                    // header('Location: index.php?action=movieShowtimes&filmID=' . $sanitizedEntries['filmID']);
+                    $app->redirect($request->getBasePath() . '/showtime/movie/add' . $filmId);
                 } else {
-                    header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
-                    exit;
+                    //header('Location: index.php?action=cinemaShowtimes&cinemaID=' . $sanitizedEntries['cinemaID']);
+                    $app->redirect($request->getBasePath() . '/showtime/cinema/add' . $cinemaId);                   
                 }
             }
         }

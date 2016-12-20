@@ -21,14 +21,13 @@
             </td>
             <?php if ($isUserAdmin): ?>
                 <td>
-                    <form name="modifyMovie" action="index.php" method="GET">
-                        <input name="action" type="hidden" value="editMovie">
+                    <form name="modifyMovie" action="<?= $request->getBasePath() . '/movie/edit' ?>" method="GET">
                         <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
                         <input type="image" src="images/modifyIcon.png" alt="Modify"/>
                     </form>
                 </td>
                 <td>
-                    <form name="deleteMovie" action="index.php?action=deleteMovie" method="POST">
+                    <form name="deleteMovie" action="<?= $request->getBasePath() . '/movie/delete' ?>" method="POST">
                         <input type="hidden" name="filmID" value="<?= $film->getFilmId() ?>"/>
                         <input type="image" src="images/deleteIcon.png" alt="Delete"/>
                     </form>
@@ -41,14 +40,13 @@
     <?php if ($isUserAdmin): ?>
         <tr class="new">
             <td colspan="5">
-                <form name="addMovie" action="index.php">
-                    <input name="action" type="hidden" value="editMovie">
+                <form name="addMovie" action="<?= $request->getBasePath() . '/movie/add' ?>">
                     <button class="add" type="submit">Cliquer ici pour ajouter un film...</button>
                 </form>
             </td>
         </tr>
     <?php endif; ?>
 </table>
-<form name="backToMainPage" action="index.php">
+<form name="backToMainPage" action="<?= $request->getBasePath() . '/home' ?>">
     <input type="submit" value="Retour à l'accueil"/>
 </form>

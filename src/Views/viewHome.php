@@ -7,8 +7,8 @@
     // si pas encore authentifié
     if (!$loginSuccess):
         ?>
-<form method="POST" name="editFavoriteMoviesList" action="<?= $request->getBasePath() . '/login' ?>" >
-            <label>Adresse email : </label>
+    <form method="POST" name="editFavoriteMoviesList" action="<?= $request->getBasePath() . '/login' ?>">
+        <label>Adresse email : </label>
             <input type="email" name="email" required/>
             <label>Mot de passe  : </label>
             <input type="password" name="password" required/>
@@ -21,7 +21,7 @@
             </div>
             <input type="submit" value="Editer ma liste de films préférés"/>
         </form>
-        <p>Pas encore d'espace personnel ? <a href=<?= $request->getBasePath() . '/user/add'?> >Créer sa liste de films préférés.</a></p>
+        <p>Pas encore d'espace personnel ? <a href="<?= $request->getBasePath() . '/user/add'?>">Créer sa liste de films préférés.</a></p>
         <?php
     // sinon (utilisateur authentifié)
     else:
@@ -41,12 +41,15 @@
             <input name="action" type="hidden" value="cinemasList"/>
             <input type="submit" value="Consulter la liste des cinémas"/>
         </form>
-        <form name="moviesList" method="GET" action="index.php">
-            <input name="action" type="hidden" value="moviesList"/>
+
+        <form name="moviesList" method="GET" action="<?= $request->getBasePath() . '/movie/list' ?>">
             <input type="submit" value="Consulter la liste des films"/>
         </form>
     </header>
 </div>
+
+
+
 
 
 
