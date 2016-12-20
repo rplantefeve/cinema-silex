@@ -10,35 +10,35 @@ $app->get('/home',
 ->bind('home');
 
 $app->match('/user/add',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::createNewUser')
+'Semeformation\\Mvc\\Cinema_crud\\Controllers\\HomeController::createNewUser')
 ->bind('/user/add');
 
 $app->post('/login',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\HomeController::home')
+'Semeformation\\Mvc\\Cinema_crud\\Controllers\\HomeController::home')
 ->bind('login');
 
-$app->get('/movie/list',
+$app->match('/movie/list',
 'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::moviesList')
 ->bind('movie/list');
 
-$app->post('/movie/edit/{filmId}',
+$app->match('/movie/edit/{filmId}',
 'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::editMovie')
 ->bind('movie/edit');
 
-$app->get('/movie/add',
+$app->match('/movie/add',
 'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::editMovie')
 ->bind('movie/add');
 
-$app->get('/movie/delete/{filmId}',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::deleteMovie')
+$app->match('/movie/delete/{filmId}',
+'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::deleteMovie')
 ->bind('/movie/delete');
 
 $app->get('/movie/list',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\MovieController::moviesList')
+'Semeformation\\Mvc\\Cinema_crud\\Controllers\\MovieController::moviesList')
 ->bind('moviesList');
 
 $app->post('/showtime/edit/{filmId}/{cinemaId}',
-'Semeformation\\Mvc\\Cinema_crud\\controllers\\ShowtimesController::editShowtime')
+'Semeformation\\Mvc\\Cinema_crud\\Controllers\\ShowtimesController::editShowtime')
 ->bind('showtime/edit');
 
 //$app->get('/showtime/movie/add/{filmId}',

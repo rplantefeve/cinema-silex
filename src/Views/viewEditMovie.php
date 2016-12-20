@@ -1,6 +1,11 @@
 <?php $this->titre = "Ajouter / Modifier un film"; ?>
 <h1>Ajouter/Modifier un film</h1>
-<form method="POST" name="editCinema" action="index.php?action=editMovie">
+<?php
+    if ($film) : ?>
+<form method="POST" name="editCinema" action="<?= $request->getBasePath() . '/movie/edit/'.$film->getFilmId(); ?>">
+    <?php else : ?>
+<form method="POST" name="editCinema" action="<?= $request->getBasePath() . '/movie/add'; ?>">
+    <?php endif; ?>
     <label>Titre :</label>
     <input name="titre" type="text" value="<?php
     if ($film): echo $film->getTitre();
@@ -12,9 +17,9 @@
     endif;
     ?>" />
     <br/>
-    <input type="hidden" value="<?php
-    if ($film) : echo $film->getFilmId();
-    endif;
+    <input type="hidden" value="<?php  
+    if ($film) : echo $film->getFilmId();  
+    endif;  
     ?>" name="filmID"/>
            <?php
            // si c'est une modification, c'est une information dont nous avons besoin
@@ -26,7 +31,7 @@
     ?>
     <input type="submit" name="saveEntry" value="Sauvegarder"/>
 </form>
-<form action="index.php" method="get">
-    <input type="hidden" value="moviesList" name="action">
+<form action="<?= $request->getBasePath() . '/movie/list' ?>" method="get">
+
     <input type="submit" name="backToList" value="Retour à la liste"/>
 </form>

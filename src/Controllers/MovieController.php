@@ -99,6 +99,8 @@ class MovieController extends Controller{
                     // on ajoute le film
                     $this->filmDAO->insertNewMovie($entries['titre'],
                             $entries['titreOriginal']);
+                    
+                    
                 }
                 // sinon, nous sommes dans le cas d'une modification
                 else {
@@ -109,11 +111,12 @@ class MovieController extends Controller{
                 // on revient à la liste des films
                 $app->redirect($request->getBasePath() . '/movie/list');
             }
+            
         }// si la page est chargée avec $_GET
         elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
             
  // on "assainit" les entrées
-            $entries = $this->extractArrayFromPostRequest($query, ['filmID']);
+            $entries = $this->extractArrayFromGetRequest($request, ['filmID']);
              if ($entries && $entries['filmID'] !== null && $entries['filmID'] !=='') {
                 // on récupère les informations manquantes 
                 $film = $this->filmDAO->getMovieByID($entries['filmID']);
@@ -128,7 +131,7 @@ class MovieController extends Controller{
         // On génère la vue films
         $vue = new View("EditMovie");
         // En passant les variables nécessaires à son bon affichage
-        return $vue->generer([
+        return $vue->generer($request,[
             'film'          => $film,
             'isItACreation' => $isItACreation]);
     }
