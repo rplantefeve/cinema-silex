@@ -7,6 +7,7 @@ use Semeformation\Mvc\Cinema_crud\Controllers\Controller;
 use Semeformation\Mvc\Cinema_crud\DAO\FilmDAO;
 use Semeformation\Mvc\Cinema_crud\Views\View;
 use Psr\Log\LoggerInterface;
+use Silex\Application;
 
 /**
  * Description of MovieController
@@ -63,7 +64,7 @@ class MovieController extends Controller{
             $this->filmDAO->deleteMovie($entries['filmID']);
         }
         // redirection vers la liste des films
-        $app->redirect($request->getBasePath() . '/movie/list');
+       return $app->redirect($request->getBasePath() . '/movie/list');
     }
 
     /**
@@ -109,7 +110,7 @@ class MovieController extends Controller{
                             $entries['titre'], $entries['titreOriginal']);
                 }
                 // on revient à la liste des films
-                $app->redirect($request->getBasePath() . '/movie/list');
+                return $app->redirect($request->getBasePath() . '/movie/list');
             }
             
         }// si la page est chargée avec $_GET
