@@ -52,12 +52,12 @@ class MovieController extends Controller{
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
             // renvoi à la page d'accueil
-            $app->redirect($request->getBasePath() . '/home');
+            return $app->redirect($request->getBasePath() . '/home');
         }
 
         // si la méthode de formulaire est la méthode POST
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
-            
+
             // on "assainit" les entrées
                 $entries = $this->extractArrayFromPostRequest($request, ['filmID']);
             // suppression de la préférence de film
@@ -75,7 +75,7 @@ class MovieController extends Controller{
         // si l'utilisateur n'est pas connecté ou sinon s'il n'est pas amdinistrateur
         if (!array_key_exists("user", $_SESSION) or $_SESSION['user'] !== 'admin@adm.adm') {
             // renvoi à la page d'accueil
-           $app->redirect($request->getBasePath() . '/home');
+           return $app->redirect($request->getBasePath() . '/home');
         }
 
         // variable qui sert à conditionner l'affichage du formulaire
@@ -83,14 +83,14 @@ class MovieController extends Controller{
 
         // si la méthode de formulaire est la méthode POST
         if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "POST") {
-            
+
             // on "assainit" les entrées
             $entries = $this->extractArrayFromPostRequest($request, ['backToList','filmID','titre','titreOriginal','modificationInProgress']);
 
             // si l'action demandée est retour en arrière
             if ($entries['backToList'] !== null) {
                 // on redirige vers la page des films
-                $app->redirect($request->getBasePath() . '/movie/list');
+                return $app->redirect($request->getBasePath() . '/movie/list');
             }
             // sinon (l'action demandée est la sauvegarde d'un film)
             else {
@@ -100,8 +100,8 @@ class MovieController extends Controller{
                     // on ajoute le film
                     $this->filmDAO->insertNewMovie($entries['titre'],
                             $entries['titreOriginal']);
-                    
-                    
+
+
                 }
                 // sinon, nous sommes dans le cas d'une modification
                 else {
@@ -112,14 +112,14 @@ class MovieController extends Controller{
                 // on revient à la liste des films
                 return $app->redirect($request->getBasePath() . '/movie/list');
             }
-            
+
         }// si la page est chargée avec $_GET
         elseif (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === "GET") {
-            
+
  // on "assainit" les entrées
             $entries = $this->extractArrayFromGetRequest($request, ['filmID']);
              if ($entries && $entries['filmID'] !== null && $entries['filmID'] !=='') {
-                // on récupère les informations manquantes 
+                // on récupère les informations manquantes
                 $film = $this->filmDAO->getMovieByID($entries['filmID']);
             }
             // sinon, c'est une création
