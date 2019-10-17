@@ -17,9 +17,9 @@
     endif;
     ?>" />
     <br/>
-    <input type="hidden" value="<?php  
-    if ($film) : echo $film->getFilmId();  
-    endif;  
+    <input type="hidden" value="<?php 
+    if ($film) : echo $film->getFilmId();
+    endif;
     ?>" name="filmID"/>
            <?php
            // si c'est une modification, c'est une information dont nous avons besoin
@@ -27,7 +27,7 @@
                ?>
         <input type="hidden" name="modificationInProgress" value="true"/>
         <?php
-    }
+           }
     ?>
     <input type="submit" name="saveEntry" value="Sauvegarder"/>
 </form>

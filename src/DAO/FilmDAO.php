@@ -10,7 +10,8 @@ use Semeformation\Mvc\Cinema_crud\Models\Film;
  *
  * @author User
  */
-class FilmDAO extends DAO {
+class FilmDAO extends DAO
+{
 
     /**
      * Crée un film à partir d'une ligne de la BDD.
@@ -18,7 +19,8 @@ class FilmDAO extends DAO {
      * @param array $row La ligne de résultat de la BDD.
      * @return Film
      */
-    protected function buildBusinessObject($row) {
+    protected function buildBusinessObject($row)
+    {
         $film = new Film();
         $film->setFilmId($row['FILMID']);
         $film->setTitre($row['TITRE']);
@@ -32,7 +34,8 @@ class FilmDAO extends DAO {
      * Méthode qui renvoie la liste des films
      * @return array[][]
      */
-    public function getMoviesList() {
+    public function getMoviesList()
+    {
         $requete   = "SELECT * FROM film";
         // on extrait les résultats
         $resultats = $this->extraireNxN($requete);
@@ -44,7 +47,8 @@ class FilmDAO extends DAO {
      * Méthode qui renvoie toutes les informations d'un film
      * @return array[]
      */
-    public function getMovieByID($filmID) {
+    public function getMovieByID($filmID)
+    {
         $requete  = "SELECT * FROM film WHERE filmID = :filmID";
         $resultat = $this->extraire1xN($requete, ['filmID' => $filmID]);
         // on récupÃ¨re l'objet Film
@@ -53,7 +57,8 @@ class FilmDAO extends DAO {
         return $film;
     }
 
-    public function getCinemaMoviesByCinemaID($cinemaID) {
+    public function getCinemaMoviesByCinemaID($cinemaID)
+    {
         // requête qui nous permet de récupérer la liste des films pour un cinéma donné
         $requete   = "SELECT DISTINCT f.* FROM film f"
                 . " INNER JOIN seance s ON f.filmID = s.filmID"
@@ -70,7 +75,8 @@ class FilmDAO extends DAO {
      * @param int $userID Identifiant de l'utilisateur
      * @return Film[] Films présents dans la base respectant les critÃ¨res
      */
-    public function getMoviesNonAlreadyMarkedAsFavorite($userID) {
+    public function getMoviesNonAlreadyMarkedAsFavorite($userID)
+    {
         // requête de récupération des titres et des identifiants des films
         // qui n'ont pas encore été marqués comme favoris par l'utilisateur
         $requete   = "SELECT f.filmID, f.titre "
@@ -91,7 +97,8 @@ class FilmDAO extends DAO {
      * @param integer $cinemaID
      * @return array
      */
-    public function getNonPlannedMovies($cinemaID) {
+    public function getNonPlannedMovies($cinemaID)
+    {
         // requête de récupération des titres et des identifiants des films
         // qui n'ont pas encore été programmés dans ce cinéma
         $requete  = "SELECT f.filmID, f.titre "
@@ -112,16 +119,19 @@ class FilmDAO extends DAO {
      * @param string $titre
      * @param string $titreOriginal
      */
-    public function insertNewMovie($titre, $titreOriginal = null) {
+    public function insertNewMovie($titre, $titreOriginal = null)
+    {
         // construction
         $requete = "INSERT INTO film (titre, titreOriginal) VALUES ("
                 . ":titre"
                 . ", :titreOriginal)";
         // exécution
-        $this->executeQuery($requete,
+        $this->executeQuery(
+            $requete,
                 [
             'titre'         => $titre,
-            'titreOriginal' => $titreOriginal]);
+            'titreOriginal' => $titreOriginal]
+        );
         // log
         if ($this->logger) {
             $this->logger->info('Movie ' . $titre . ' successfully added.');
@@ -134,7 +144,8 @@ class FilmDAO extends DAO {
      * @param string $titre
      * @param string $titreOriginal
      */
-    public function updateMovie($filmID, $titre, $titreOriginal) {
+    public function updateMovie($filmID, $titre, $titreOriginal)
+    {
         // on construit la requête d'insertion
         $requete = "UPDATE film SET "
                 . "titre = "
@@ -151,7 +162,8 @@ class FilmDAO extends DAO {
      * Supprime un film
      * @param integer $movieID
      */
-    public function deleteMovie($movieID) {
+    public function deleteMovie($movieID)
+    {
         $this->executeQuery("DELETE FROM film WHERE filmID = "
                 . $movieID);
 
@@ -159,5 +171,4 @@ class FilmDAO extends DAO {
             $this->logger->info('Movie ' . $movieID . ' successfully deleted.');
         }
     }
-
 }

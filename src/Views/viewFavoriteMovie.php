@@ -14,9 +14,9 @@
                             ?>
                     <option value="<?= $film->getFilmId(); ?>"><?= $film->getTitre(); ?></option>
                     <?php
+                        }
+                    }
                 }
-            }
-        }
         // sinon, c'est une modification, nous n'avons qu'une seule option dans la liste
         else {
             ?>
